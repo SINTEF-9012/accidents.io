@@ -90,7 +90,7 @@ declare module MasterScope {
 }
 
 interface Knowledge {
-	typeName: string;
+	typeName?: string;
 	tablePropertiesOrder: { [key: string]: number };
 	typeTest?: RegExp;
 }

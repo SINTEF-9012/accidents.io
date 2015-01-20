@@ -1,3 +1,5 @@
+/// <reference path="./../bower_components/DefinitelyTyped/leaflet/leaflet.d.ts" />
+
 /// <reference path="./references/generic.d.ts" />
 
 'use strict';
