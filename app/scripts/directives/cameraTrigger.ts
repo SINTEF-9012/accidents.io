@@ -15,22 +15,25 @@ angular.module('mobileMasterApp')
 	return {
 		template: '<div class="camera-trigger">' +
 			'<span class="glyphicon glyphicon-camera"></span>' +
-			'<input type="file" accept="image/*,video/*,audio/*"' +
-			' capture ng-file-select="onCapture($files)" />' +
+			'<input type="file" accept="image/*,video/*,audio/*" ng-file-select ng-model="myFile"' +
+			' capture resetOnClick="true"/>' +
 		'</div>',
 		restrict: 'E',
 		scope: true,
 		link: (scope: any, element: JQuery, attrs: any) => {
-			scope.onCapture = ($files) => {
+			scope.$watch('myFile', () => {
+				if (!scope.myFile || !scope.myFile.length) {
+					return;
+				}
 
 				// Replace the input field seems to fix a lot of issues
-				var c = element.find('input:first');
-				c.replaceWith(c.clone(true));
+				//var c = element.find('input:first');
+				//c.replaceWith(c.clone(true));
 
 				cfpLoadingBar.start();
 				$upload.upload({
 					url: settingsService.getMediaServerUrl() + '/upload',
-					file: $files
+					file: scope.myFile[0]
 				}).progress((e) => {
 					cfpLoadingBar.set(e.loaded / e.total);
 				}).success((data) => {
@@ -40,7 +43,7 @@ angular.module('mobileMasterApp')
 				}).then(() => {
 					cfpLoadingBar.complete();
 				});
-			}
+			});
 		}
 	}
 });
