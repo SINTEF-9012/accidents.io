@@ -130,7 +130,7 @@ angular.module('mobileMasterApp').controller('AddCtrl', (
 		jIconContainer.empty().append($compile(icon)($scope));
 	};
 
-	$scope.activate = (category:string, type: string)=> {
+	$scope.activate = (category: string, type: string) => {
 		$rootScope.add = {
 			category: category,
 			type: type
@@ -188,7 +188,6 @@ angular.module('mobileMasterApp').controller('AddCtrl', (
 	masterMap.closePopup();
 	masterMap.enableInteractions();
 	masterMap.enableScale();
-	masterMap.disableMiniMap();
 
 	var jwindow = $($window), jMap = $('#thing-map'), jView = $('#thing-view');
 	var destroyed = false;

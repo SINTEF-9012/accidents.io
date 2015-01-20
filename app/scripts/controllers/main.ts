@@ -193,7 +193,6 @@ angular.module('mobileMasterApp')
 	persistentMap.unbindMasterMap(masterMap);
 
     masterMap.disableInteractions();
-    masterMap.disableMiniMap();
     masterMap.disableScale();
 
 	var jwindow = $($window);

@@ -449,52 +449,6 @@
 
 			};
 
-			function reloadMinimapMarkers() {
-				minimap.clear();
-
-				angular.forEach(thingsOnTheMap, (marker: PruneCluster.Marker) => {
-					var minimapPoint = marker.data.minimapPoint, color = marker.data.minimapColor;
-					if (minimapPoint) {
-						minimapPoint.lat = marker.position.lat;
-						minimapPoint.lng = marker.position.lng;
-					} else {
-						minimapPoint = new L.LatLng(marker.position.lat, marker.position.lng);
-						marker.data.minimapPoint = minimapPoint;
-					}
-
-					minimap.addPoint(minimapPoint, color);
-				});
-			}
-
-			var minimap = null, miniMapEnabled = false;
-			instance.enableMiniMap = function () {
-				if (!minimap) {
-					var osm2 = new L.TileLayer('https://{s}.tiles.mapbox.com/v3/apultier.i0afp8bh/{z}/{x}/{y}.png', {
-						detectRetina: true,
-						maxNativeZoom: 17
-					});
-
-					minimap = new L.Control.RTSMiniMap(osm2, { toggleDisplay: false });
-				}
-
-				if (!miniMapEnabled) {
-					minimap.addTo(instance);
-					reloadMinimapMarkers();
-					minimap.render();
-					miniMapEnabled = true;
-				}
-
-				return this;
-			};
-
-			instance.disableMiniMap = function() {
-				if (minimap && miniMapEnabled) {
-					instance.removeControl(minimap);
-					miniMapEnabled = false;
-				}
-				return this;
-			};
-
 			instance.hideTileLayer = (name: string) => {
 				if (layersTable.hasOwnProperty(name)) {
 					var layer: MasterScope.Layer = layersTable[name];
@@ -586,10 +540,6 @@
 				firstCall = true,
 				processViewWorker = () => {
 					cluster.ProcessView();
-
-				if (miniMapEnabled) {
-					minimap.render();
-				}
 
 				if (firstCall) {
 					window.setTimeout(overviewWorker, 300);
@@ -844,12 +794,6 @@
 				m.data.minimapColor = color;
 				// TODO weight ?
 
-				if (minimap && miniMapEnabled) {
-					var minimapPoint = new L.LatLng(location.Latitude, location.Longitude);
-					m.data.minimapPoint = minimapPoint;
-					minimap.addPoint(minimapPoint, color);
-				}
-
 				cluster.RegisterMarker(m);
 				thingsOnTheMap[thing.ID] = m;
 
@@ -880,14 +824,6 @@
 				marker.Move(location.Latitude, location.Longitude);
 				marker.filtered = filteringMethod(thing);
 
-				if (miniMapEnabled) {
-					var minimapPoint = <L.LatLng>marker.data.minimapPoint;
-					if (minimapPoint) {
-						minimapPoint.lat = location.Latitude;
-						minimapPoint.lng = location.Longitude;
-					}
-				}
-
 				processView();
 			};
 
@@ -908,10 +844,6 @@
 
 							cluster.RemoveMarkers(markersToRemove);
 							markersToRemove = [];
-
-							if (miniMapEnabled) {
-								reloadMinimapMarkers();
-							}
 
 							processView();
 						}, 50);

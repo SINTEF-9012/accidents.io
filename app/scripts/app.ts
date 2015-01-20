@@ -49,7 +49,7 @@ angular.module('mobileMasterApp', [
             templateUrl: 'views/map.html'
         })
         .state('map.slidder', {
-            url: '^/map',
+            url: '^/',
             views: {
                 'slidder': {
 					controller: 'SlidderCtrl',
@@ -90,7 +90,7 @@ angular.module('mobileMasterApp', [
 			templateUrl: 'views/patientedit.html'
 		})
         .state('main', {
-            url: '/',
+            url: '/dashboard',
             controller: 'MainCtrl',
             templateUrl: 'views/main.html'
 		})

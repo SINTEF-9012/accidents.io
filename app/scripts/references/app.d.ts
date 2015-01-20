@@ -15,8 +15,8 @@ declare module Master {
 		enableInteractions(): Map;
 		disableInteractions(): Map;
 
-		enableMiniMap(): Map;
-		disableMiniMap(): Map;
+		//enableMiniMap(): Map;
+		//disableMiniMap(): Map;
 
 		enableScale();
 		disableScale();
@@ -200,4 +200,8 @@ interface AuthenticationService {
 
 interface RrdService {
 	load: (id:string,property:string, callback: (data: any[][]) => void,minMax?: {min: string; max:string}) => void;
+}
+
+interface GeocodingService {
+	forward: (address: string, callback: (geojson: any) => void) => void;
 }
