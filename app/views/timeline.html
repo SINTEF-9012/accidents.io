@@ -1,0 +1,40 @@
+<header>
+	<nav class="navbar navbar-default navbar-fixed-top timeline-navbar" role="navigation">
+		<div class="container-fluid">
+			<div class="row">
+
+				<a class="navbar-brand col-xs-2" ui-sref="main"><span class="glyphicon glyphicon-th"></span></a>
+
+				<h3 class="col-xs-8">Timeline</h3>
+
+				<div class="navbar-btn-group pull-right" ng-show="!isLive">
+					<a ui-sref="main" class="btn navbar-btn btn-success">Load</a>
+			    	<button ng-click="live()" type="button" class="btn btn-danger navbar-btn pull-right">Live</button>
+				</div>
+			</div>
+		</div>
+	</nav>
+</header>
+
+<div class="container-fluid container-timeline" ng-init="date='now'">
+	<div class="row">
+		<h3 class="col-xs-12">
+			<span ng-show="isLive">Live</span>
+			<span ng-show="!isLive"><span am-time-ago="date"></span> - {{date | date:'d/M/yy H:mm'}}</span>
+		</h3>
+		<div ng-style="{backgroundImage: gradient}" class="col-xs-12">
+			<input type="range" ng-model="sliderValue" name="" min="0" max="1000" step="1" value="" placeholder="" class="col-xs-12">
+		</div>
+
+		&nbsp;
+		<br/>
+	</div>
+
+	<h3><ng-pluralize count="data.length" when="{'0': 'The situation is empty', 'one': '1 record', 'other': '{} records'}"></ng-pluralize></h3>
+	<div class="row timeline-data-block-area">
+		<div>
+			<div class="timeline-data-block" ng-repeat="d in data" ng-style="{backgroundColor: 'hsl(210,'+(30+d.s/5)+'%,'+(d.s + 10 > 80 ? 80 : d.s+10)+'%)'}" ng-mouseover="$parent.date = d.d" ng-click="selectRecord(d)">
+			</div>
+		</div>
+	</div>
+</div>

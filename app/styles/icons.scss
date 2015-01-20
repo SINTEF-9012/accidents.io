@@ -1,0 +1,705 @@
+@import "_settings";
+
+@font-face {
+	font-family: 'bridgeiconsregular';
+	src: url('/fonts/font4799-webfont.eot');
+	src: url('/fonts/font4799-webfont.eot?#iefix') format('embedded-opentype'),
+	url('/fonts/font4799-webfont.woff') format('woff'),
+         // url('/fonts/font4799-webfont.ttf') format('truetype'),
+         url('/fonts/font4799-webfont.svg#bridgeiconsregular') format('svg');
+         font-weight: normal;
+         font-style: normal;
+     }
+
+// Google Chrome has some issues for font smoothing on Windows
+// A workaround is to use SVG fonts, but it's a bit slower and
+// webkit has a bug with svg-fonts and 3D acceleration
+// The best solution I found is just to enable the experimental DirectWrite feature
+// It's accessible in chrome://flags and the web looks better with it 
+/*@media screen and (-webkit-min-device-pixel-ratio:0) {
+	@font-face {
+		font-family: 'bridgeiconsregular';
+		src: url('/fonts/font4799-webfont.svg#bridgeiconsregular') format('svg');
+		font-weight: normal;
+		font-style: normal;
+	}
+
+	master-icon.fonticon > div {
+		top:0.2em;
+	}
+}*/
+
+
+.info-number {
+	display: inline-block;
+	// width: 3em;
+	text-align: left;
+	position: relative;
+	font-weight: bold;
+	// padding-left: 2.2em;
+	// padding-right: 0.2em;
+	master-icon {
+		margin-right: 0.3em;
+
+		&.order, &.patients, &.resources, &.messages, &.multimedias {
+			height: 25px;
+			width: 25px;
+			margin-top: -5px;
+			margin-bottom: -5px;
+		}
+	}
+}
+
+master-icon {
+	/* font-size: 2.05em; */
+	display: inline-block;
+	/* position: absolute; */
+	/* margin-top: -8px; */
+	/* left: 0; */
+	font-weight: normal;
+	width: 1.5em;
+	height: 1.5em;
+	line-height: 1.5em;
+	text-align: center;
+	vertical-align: middle;
+	image-rendering:optimizequality;
+	// position: relative;
+// background: #ada59a;
+// border-radius: 50%;
+&.default-icon,&.others {
+	// background: $pantone_130;
+	background:$indigo-color;
+	border-radius:50%;
+	color: white;
+}
+
+&.advise {
+	//position:relative;
+	//border:1px solid $gray;
+	box-shadow: 0px 0px 0px 1px rgba(0,0,0,0.33);
+	transform: rotate(45deg);
+
+	& > div {
+		position:absolute;
+		width:50%;
+		height:50%;
+		font-size: 8px;
+		line-height: 12px;
+
+	}
+
+	.advise-health, .advise-fire, .advise-instability, .advise-specific {
+		& > span {
+			color: black;
+			display: block;
+			transform: rotate(-45deg);
+		}
+	}
+
+	.advise-health {
+		bottom:0;
+		left:0;
+		background: rgb(0, 176,240);
+		//border-right:1px solid white;
+	}
+
+	.advise-fire {
+		left:0;
+		top:0;
+		background: rgb(240,70,70);
+		//border-right:1px solid white;
+		//border-bottom:1px solid white;
+	}
+
+	.advise-instability {
+		top:0;
+		right:0;
+		background: rgb(255,240,0);
+		//border-bottom:1px solid white;
+	}
+
+	.advise-specific {
+		bottom:0;
+		right:0;
+		background:white;
+	}
+}
+
+&.order {
+	background:url(../images/reticle-icon.png) no-repeat center;
+	background-size:100% 100%;
+}
+
+&.patients {
+	background:url(../images/patients-icon.png) no-repeat center;
+	background-size:100% 100%;
+}
+
+&.resources {
+	background:url(../images/resources-icon.png) no-repeat center;
+	background-size:100% 100%;
+}
+
+&.messages {
+	background:url(../images/messages-icon.png) no-repeat center;
+	background-size:100% 100%;
+}
+
+&.multimedias {
+	background:url(../images/smartphone-icon.png) no-repeat center;
+	background-size:100% 100%;
+}
+
+
+/*&.others {
+	color: white;
+	background-color:$indigo-color;
+}*/
+
+@media (min--moz-device-pixel-ratio: 1.3),
+	(-o-min-device-pixel-ratio: 2.6/2),
+	(-webkit-min-device-pixel-ratio: 1.3),
+	(min-device-pixel-ratio: 1.3),
+	(min-resolution: 1.3dppx) {
+
+	&.order {
+		background:url(../images/reticle-icon@2x.png) no-repeat center;
+		background-size:100% 100%;
+	}
+
+	&.patients {
+		background:url(../images/patients-icon@2x.png) no-repeat center;
+		background-size:100% 100%;
+	}
+	
+	&.resources {
+		background:url(../images/resources-icon@2x.png) no-repeat center;
+		background-size:100% 100%;
+	}
+
+	&.messages {
+		background:url(../images/messages-icon@2x.png) no-repeat center;
+		background-size:100% 100%;
+	}
+
+	&.multimedias {
+		background:url(../images/smartphone-icon@2x.png) no-repeat center;
+		background-size:100% 100%;
+	}
+}
+&.fonticon > div {
+	text-rendering:geometricPrecision;
+	font-family: 'bridgeiconsregular';
+	position: relative;
+	display: inline-block;
+		// line-height:0;
+		font-size:1.7em;
+		// top:0.2em;
+		vertical-align: bottom;
+
+		left:-0.2em;
+		// top:-2px;
+
+		.type {
+			color:black;
+			position:absolute;
+			top:0;
+		}
+
+		&:before {
+			content:" ";
+			position:absolute;
+			z-index:1;
+		}
+
+		&.incident {
+			color:orange;
+
+			&:before {
+				content:"i";
+				color:red;
+			}
+		}
+
+		&.risk {
+			color:white;
+
+			&:before {
+				content:"L";
+				color:red;
+			}
+		}
+
+		&.response {
+			&:before {
+				content:"r";
+				color:white;
+			}
+
+			.type {
+				color:white;
+			}
+		}
+
+		&.resource, &.response {
+			color:green;
+
+			&.health, &.ambulances {
+				color:rgb(146,208,80);
+			}
+
+			&.fire, &.firetruck {
+				color:red;
+			}
+
+			&.police {
+				color:rgb(0,201,255);
+			}
+
+			&.uav {
+				color:rgb(44, 44, 44);
+			}
+
+			.type {
+				color:white;
+			}
+
+			&.red.cross .type {
+				color:red;
+			}
+		}
+
+		&.resource {
+			&:before {
+				content:"r";
+				color:white;
+			}
+		}
+
+		&.helpbeacon {
+			//color: #8e44ad;
+			//color: $purple-color;
+			color: $red-color;
+			.type {
+				color:white;
+			}
+
+		}
+	}
+	&.safe > div.helpbeacon {
+		color: $blue-color;
+	}
+
+	&.rescued > div.helpbeacon {
+		color: $green-color;
+	}
+}
+
+.glow master-icon, master-icon.glow {
+	&:after {
+		background: url(../images/glow-background.png) no-repeat center;
+		background-size: 100% 100%;
+		display:block;
+		content: ' ';
+		position: absolute;
+		z-index: -1;
+		width: 42px;
+		height: 42px;
+		top: -4px;
+		left: 4px;
+
+		animation-duration: 3s;
+		animation-name: glowingopacity;
+		animation-iteration-count: infinite;
+	}
+
+	&.fonticon:after {
+		top:-4px;
+		left:-2px;
+	}
+
+	&.order:after {
+		top:-4px;
+		left:4px;
+	}
+}
+
+.map master-icon {
+	width: 40px;
+	height: 40px;
+	line-height: 40px;
+	font-size: 16px;
+
+	// TODO check if it's not a bad idea
+	text-shadow: 0px 0px 2px rgba(0,0,0,0.25);
+
+	&.fonticon > div {
+		font-size:40px;
+		left:0;
+		//top: 1px;
+
+		&.resource, &.response {
+			&:before {
+				top:1px;
+			}
+		}
+	}
+
+}
+
+.map {
+	.prunecluster {
+		font-size: 12px;
+	}
+
+	.prunecluster div {
+		width: 30px;
+		height: 30px;
+		text-align: center;
+		margin-left: 5px;
+		margin-top: 5px;
+		border-radius: 100%;
+	}
+	.prunecluster div span {
+		line-height: 30px;
+	}
+
+	.prunecluster-small {
+		background-color: rgba(181, 226, 140, 0.6);
+	}
+
+	.prunecluster-small div {
+		width: 28px;
+		height: 28px;
+		background-color: rgba(110, 204, 57, 0.6);
+	}
+
+	.prunecluster-small div span {
+		line-height: 28px;
+	}
+
+	.prunecluster-medium {
+		background-color: rgba(241, 211, 87, 0.6);
+	}
+
+	.prunecluster-medium div {
+		background-color: rgba(240, 194, 12, 0.6);
+	}
+
+	.prunecluster-large {
+		background-color: rgba(253, 156, 115, 0.6);
+	}
+
+	.prunecluster-large div {
+		width: 34px;
+		height: 34px;
+		background-color: rgba(241, 128, 23, 0.6);
+	}
+
+	.prunecluster-large div span {
+		line-height: 34px;
+	}
+}
+
+/*.infos {
+	master-icon.order {
+		background:url(../images/reticle-icon-21.png) no-repeat center;
+		background-size:21px;
+		@media (min--moz-device-pixel-ratio: 1.3),
+		(-o-min-device-pixel-ratio: 2.6/2),
+		(-webkit-min-device-pixel-ratio: 1.3),
+		(min-device-pixel-ratio: 1.3),
+		(min-resolution: 1.3dppx) {
+			background:url(../images/reticle-icon.png) no-repeat center;
+			background-size:100% 100%;
+		}
+	}
+}*/
+
+#map-root {
+
+	.thing-icon-standard {
+		background:orange;
+		border-radius:50%;
+		box-shadow:0 0 0 2px white, 0px 0px 0 3px black;
+		margin-left: -5px;
+		margin-top:-5px;
+
+	}
+
+
+	.thing-icon {
+		master-icon {
+			font-size:40px;
+		}
+	}
+	:not(.thing-icon).thing-icon-ESS14-vehicle-wheeled {
+		background:red;
+	}
+
+	.thing-icon-ESS14-person-patient {
+		&.triage-BLACK {
+			background:black;
+		}
+		&.triage-RED {
+			background:red;
+		}
+		&.triage-YELLOW {
+			background:orange;
+		}
+		&.triage-ORANGE {
+			background:orange;
+		}
+		&.triage-GREEN {
+			background:green;
+		}
+	}
+}
+.btn.btn-lg master-icon {
+	margin-top:-6px;
+	left:5px;
+}
+
+.glyphicon.disabled {
+	color:lighten(#000, 80%);
+}
+
+.triage-light {
+	height:20px;
+	width:20px;
+	border-radius:10px;
+	float:left;
+	margin-right:7px;
+	border:1px solid black;
+    // cartoon/flat shadow
+    box-shadow: -1px -2px 0px 0px rgba(0, 0, 0, 0.2) inset,
+        1px 1px 0px 0px rgba(255, 255, 255, 0.3) inset
+}
+
+master-icon.hospitalType {
+	background: white;
+	text-transform: uppercase;
+	color: red;
+	font-weight: bolder;
+	border-radius: 25%;
+	font-size: 25px;
+	box-shadow: -1px -1px 8px grey inset,
+				0px 0px 2px rgba(0,0,0,0.5);
+	width:36px;
+	height:36px;
+	line-height:36px;
+	margin:2px;
+
+}
+
+.map master-icon.patient {
+	//background:black;
+	//border-radius:50%;
+	// box-shadow:0px 0px 10px rgba(0,0,0,0.66);
+    // It's maybe an optimization
+	text-shadow: none;
+	&.patientBraceletOff {
+		&:not(.selected) {
+			opacity: 0.5;
+		}
+		color: black;
+		text-transform: uppercase;
+		font-size: 0.8em;
+	}
+	&.patientAlarmAct .triage-light {
+		border: 2px solid red;
+		animation-duration: 3s;
+		animation-name: glowingborder;
+		animation-iteration-count: infinite;
+	}
+}
+.map master-icon .triage-light {
+	height:38px;
+	width:38px;
+	float:none;
+	margin-top:1px;
+	margin-left:0px;
+	border-radius:50%;
+	// border:2px solid white;
+	border: none;
+    box-shadow: -3px -4px 0px 0px rgba(0, 0, 0, 0.2) inset,
+        2px 1px 0px 0px rgba(255, 255, 255, 0.35) inset,
+        0 0 0 1px rgba(0,0,0,0.35);
+}
+
+.map master-icon .glyphicon {
+	font-size: 20px;
+	color: white;
+	line-height: 36px;
+}
+.map master-icon.glyph {
+	background: rgba(0,0,0,0.7);
+	border-radius: 50%;
+
+	//box-shadow: 0px 0px 12px red;
+}
+
+.btn-lg master-icon.fonticon > div {
+	font-size:36px;
+	top:3px;
+}
+
+.map .cluster-multi {
+	background:rgba(150,70,60,0.42);
+
+	master-icon {
+		line-height:30px;
+		width:30px;
+		height:30px;
+
+		.triage-light {
+			height: 30px;
+			width: 30px;
+			margin: 0;
+		}	
+	}
+	master-icon.fonticon > div {
+		font-size:12px;
+	}
+	master-icon:first-child.fonticon > div {
+		font-size:30px;
+	}
+}
+
+.map .advise {
+	& > div {
+		line-height: 18px;
+	}
+
+	width:1.5em;
+	height:1.5em;
+	font-size: 1.8em;
+}
+
+.map master-icon.selected {
+
+	&.fonticon > div {
+		text-shadow: 0px 0px 30px rgb(0, 82, 255), 0px 0px 7px rgb(85, 106, 255);
+		&:before, div {
+			text-shadow: none;
+		}
+	}
+
+	&.order {
+		background-color:rgba(0, 82, 255, 0.5);
+		border-radius:50%;
+	}
+
+	&.advise, &.glyph, &.order, &.default-icon {
+		box-shadow: 0px 0px 30px rgb(0, 82, 255), 0px 0px 7px rgb(85, 106, 255);
+	}
+
+	.triage-light {
+	    box-shadow: -1px -2px 0px 0px rgba(0, 0, 0, 0.2) inset,
+	        1px 1px 0px 0px rgba(255, 255, 255, 0.3) inset,
+	        0px 0px 30px rgb(0, 82, 255),
+	        0px 0px 7px rgb(85, 106, 255);
+	}
+	
+	&.hospitalType {
+		box-shadow: -1px -1px 8px grey inset,0px 0px 30px rgb(0, 82, 255), 0px 0px 7px rgb(85, 106, 255);
+	}	
+}
+
+/*@keyframes glowingtext {
+	from {
+		text-shadow: 0px 0px 6px yellow;
+	}
+	30% {
+		text-shadow: 0px 0px 20px yellow;
+	}
+
+	50% {
+		text-shadow: 0px 0px 12px yellow;
+	}
+
+	70% {
+		text-shadow: 0px 0px 20px yellow;
+	}
+	to {
+		text-shadow: 0px 0px 6px yellow;
+	}
+}
+
+@keyframes glowingbox {
+	from {
+		box-shadow: 0px 0px 6px yellow;
+	}
+	30% {
+		box-shadow: 0px 0px 20px yellow;
+	}
+
+	50% {
+		box-shadow: 0px 0px 12px yellow;
+	}
+
+	70% {
+		box-shadow: 0px 0px 20px yellow;
+	}
+	to {
+		box-shadow: 0px 0px 6px yellow;
+	}
+}*/
+
+@keyframes glowingopacity {
+	from {
+		opacity:0;
+	}
+	30% {
+		opacity:1;
+	}
+
+	50% {
+		opacity:0.8;
+	}
+
+	70% {
+		opacity:1;
+	}
+	to {
+		opacity:0;
+	}
+}
+@keyframes glowingborder {
+	from {
+		border-color:red;
+	}
+	30% {
+		border-color:purple;
+	}
+
+	50% {
+		border-color:rgb(157, 13, 78);
+	}
+
+	70% {
+		border-color:purple;
+	}
+	to {
+		border-color:red;
+	}
+}
+
+.big-advise-icon {
+	text-align:center;
+	
+	master-icon {
+		font-size: 7em;
+		margin: 0.5em;
+		margin-bottom: 0.7em;
+
+		&.advise > div {
+			font-size: 0.3em;
+			line-height: 2.6em;
+		}
+	}
+}
+
+.thing.row master-icon {
+	font-size: 1.1em;
+}

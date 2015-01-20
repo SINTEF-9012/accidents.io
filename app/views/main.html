@@ -1,0 +1,135 @@
+<h1 id="masterlogo"><a href="/settings">Master</a></h1>
+<div id="username" ng-click="changeUserName()">{{username}}</div>
+
+<div class="container-fluid">
+	<div class="row">
+		<h1 class="col-xs-12" id="mastertitle">
+			<a class="summaryeditlink" ui-sref="summary.edit" ng-hide="pastSituation">
+				<span class="glyphicon glyphicon-pencil"></span>
+			</a>
+			<a ui-sref="summary">
+				{{!thingmodel || thingmodel.loading ? 'Loading' : title}}
+			</a>
+		</h1>	
+	</div>
+
+	<div class="row">
+		<div class="col-sm-4 col-md-4" ng-controller="SlidderCtrl">
+			<div class="row responsive-infoblock-column">
+				<a class="infoblock col-xs-6 col-lg-4"
+					href="{{infos.Incidents.href || '/table/Incidents'}}">
+					<h3>Incidents</h3>
+					<div class="infoblockview">
+						<div class="number-area">{{infos.Incidents.count || 0}}</div>	
+					</div>
+				</a>
+				<a class="col-xs-6 col-lg-4 infoblock patients-block"  href="{{infos.Patients.href || '/patients'}}">
+					<h3>Patients</h3>
+					<div class="infoblockview">
+						<div class="canvas-area" ng-show="infos.Patients.count > 0">
+							<div class="number-area">{{infos.Patients.count}}</div>
+							<canvas id="patients-chart"></canvas>
+						</div>
+						<div class="number-area" ng-show="!(infos.Patients.count > 0)">0</div>	
+					</div>
+				</a>	
+					
+				<a class="col-xs-6 col-lg-4 infoblock"
+					href="{{infos.Risks.href || '/table/Risks'}}">
+					<h3>Risks</h3>
+					<div class="infoblockview">
+						<div class="number-area">{{infos.Risks.count || 0}}</div>	
+					</div>
+				</a>
+				<a class="col-xs-6 col-lg-4 infoblock"
+					href="{{infos.Resources.href || '/table/Resources'}}">
+					<h3>Resources</h3>
+					<div class="infoblockview">
+						<div class="canvas-area" ng-show="infos.Resources.count > 0">
+							<div class="number-area">{{infos.Resources.count}}</div>
+							<canvas id="resources-chart"></canvas>
+						</div>
+						<div class="number-area" ng-show="!(infos.Resources.count > 0)">0</div>	
+					</div>
+				</a>
+				<a class="col-xs-6 col-lg-4 infoblock"
+					href="{{infos.Responses.href || '/table/Responses'}}">
+					<h3>Responses</h3>
+					<div class="infoblockview">
+						<div class="number-area">{{infos.Responses.count || 0}}</div>
+					</div>
+				</a>
+				<a class="col-xs-6 col-lg-4 infoblock"
+					href="{{infos.Orders.href || '/table/Orders'}}">
+					<h3>Orders</h3>
+					<div class="infoblockview">
+						<div class="number-area">{{infos.Orders.count || 0}}</div>	
+					</div>
+				</a>
+				<a class="col-xs-6 col-lg-4 infoblock"
+					href="{{infos.Beacons.href || '/table/Beacons'}}">
+					<h3>Beacons</h3>
+					<div class="infoblockview">
+						<div class="canvas-area" ng-show="infos.Beacons.count > 0">
+							<div class="number-area">{{infos.Beacons.count}}</div>
+							<canvas id="beacons-chart"></canvas>
+						</div>
+						<div class="number-area" ng-show="!(infos.Beacons.count > 0)">0</div>	
+					</div>
+				</a>
+				<a class="col-xs-6 col-lg-4 infoblock"
+					href="{{infos.Others.href || '/table/Others'}}">
+					<h3>Others</h3>
+					<div class="infoblockview">
+						<div class="number-area">{{infos.Others.count || 0}}</div>	
+					</div>
+				</a>
+			</div>
+		</div>
+		<div class="col-sm-6 col-md-6">
+			<div class="row" id="main-map"><div></div></div>
+			<div class="row">
+				<a class="col-xs-12 infoblock mediablock" href="{{infos.Multimedias.href || '/Multimedias'}}" ng-controller="MultimediasCtrl" id="main-mediablock">
+					<h3 ng-show="medias.length == 0">Multimedias</h3>
+					<img ng-repeat="media in medias" ng-src="{{media.url}}" alt="" class="multimedia-thumbnail" height="128" width="128" />
+				</a>
+			</div>
+		</div>
+		<div class="col-sm-2 col-md-2">
+			<div class="row chat-block" id="main-chat" ng-controller="MessengerCtrl">
+				<h3 ui-sref="messenger">Chat</h3>
+
+				<div class="chat-area chat-scroll-area" ui-sref="messenger">
+					<chat-message ng-repeat="message in messages" thing="message"></chat-message>
+				</div>
+
+				<div class="chat-input">
+					<form ng-submit="send()">
+						<input type="text" class="form-control" ng-model="messageContent" tabindex="1" required ng-disabled="pastSituation"/>
+					</form>
+				</div>
+			</div>
+			<div class="row">
+				<div class="infoblock timeline-block col-xs-12" id="main-timeline" ui-sref="timeline">
+					<h3>Timeline</h3>
+
+					<ul class="list-unstyled">
+						<li>
+							<strong>Creation date&nbsp;: </strong> <br>
+							<span am-time-ago="timelineInfos.oldest">unknown</span>
+						</li>
+
+						<li>
+							<strong>Last change&nbsp;: </strong> <br>
+							<span am-time-ago="timelineInfos.newest">...loading...</span>
+						</li>
+	
+					</ul>
+					<span class="timeline-block-count">{{timelineInfos.count}}</span>
+				</div>
+			</div>
+		</div>
+	</div>	
+</div>
+
+<a ui-sref="map.slidder" id="main-map-link"></a>

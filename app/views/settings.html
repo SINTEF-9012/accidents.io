@@ -1,0 +1,57 @@
+<div class="container container-fluid">
+	<div class="row">
+		<h1 class="col-xs-12">Settings</h1>
+	</div>
+	<form class="form-horizontal" role="form" ng-submit="reload()">
+		<h3>
+			<img src="images/thingmodel.png" alt="" width="38px" height="38px"/> ThingModel
+		</h3>
+		<div class="form-group">
+			<label for="inputThingModelUrl" class="col-sm-3 control-label">Server endpoint</label>
+			<div class="col-sm-9">
+				<input type="text" class="form-control" id="inputThingModelUrl" ng-model="thingModelUrl" required/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="inputClientName" class="col-sm-3 control-label">Client Name</label>
+			<div class="col-sm-9">
+				<input type="text" class="form-control" id="inputClientName" ng-model="clientName" required/>
+			</div>
+		</div>
+		<div ng-show="channels">
+			<h3>
+				<span class="glyphicon glyphicon-th-list"></span> Channels
+			</h3>
+			<ul class="list-group col-sm-offset-3">
+				<a class="list-group-item" ng-repeat="channel in channels" href="#" ng-click="$parent.thingModelUrl=channel.url;reload()">
+					<h4>{{channel.name||"Untitled"}} <small>{{channel.description}}</small></h4>	
+					<p>
+						Creation date : <span am-time-ago="channel.creationDate"></span>
+					</p>
+					<code>{{channel.url}}</code>
+				</a>
+			</ul>
+			<!-- <button class="btn btn-default col-sm-2 col-sm-offset-10"><span class="glyphicon glyphicon-plus"></span>&nbsp;New channel</button> -->
+		</div>
+		<h3>
+			<span class="glyphicon glyphicon-cloud"></span> Data server
+		</h3>
+		<div class="form-group">
+			<label for="inputMediaServerUrl" class="col-sm-3 control-label">Media server endpoint</label>
+			<div class="col-sm-9">
+				<input type="url" class="form-control" id="inputMediaServerUrl" ng-model="mediaServerUrl" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="inputRrdServerUrl" class="col-sm-3 control-label">RRD server endpoint</label>
+			<div class="col-sm-9">
+				<input type="url" class="form-control" id="inputRrdServerUrl" ng-model="rrdServerUrl" />
+			</div>
+		</div>
+		<br/>
+		<div class="row">
+			<input type="submit" class="col-xs-7 col-xs-push-4 col-sm-5 col-sm-push-6 btn btn-lg btn-primary" ng-click="reload()" value="All right"/>
+		</div>
+	</form>
+	<br>&nbsp;<br>
+</div>

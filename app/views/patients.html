@@ -1,0 +1,93 @@
+<header>
+	<nav class="navbar navbar-default navbar-fixed-top master-list-navbar" role="navigation">
+	  <div class="container-fluid">
+	  	<div class="row">
+	  		
+		    <a class="navbar-brand col-xs-1" href="#" ng-href="{{returnLink}}"><span class="glyphicon" ng-class="from === 'map' ? 'glyphicon-chevron-left' : 'glyphicon-th'"></span></a>
+
+	    	<h3 class="col-sm-6 col-sm-push-1 col-xs-9 ng-hide" ng-show="filter">Patients{{filter != 'all' ? ' ' + filter : ''}}</h3>
+
+	    	<div class="btn-group navbar-btn-group pull-right" data-toggle="buttons">
+			  <label class="btn navbar-btn btn-primary" ng-class="filter === 'all' ? 'active' : ''"
+			  ui-sref="patients({filter: 'all', page: undefined})">
+			    <input type="radio" name="status"> All
+			  </label>
+			  <label class="btn navbar-btn btn-primary"
+				ng-class="filter === 'black' ? 'active' : ''"
+			  	ui-sref="patients({filter: 'black', page: undefined})">
+			    <input type="radio" name="status">
+			    <div class="triage-light" style="background:black"></div>
+			  </label>
+			  <label class="btn navbar-btn btn-primary" 
+				ng-class="filter === 'red' ? 'active' : ''"
+			  	ui-sref="patients({filter: 'red', page: undefined})">
+			    <input type="radio" name="status">
+			    <div class="triage-light" style="background:red"></div>
+			  </label>
+			  <label class="btn navbar-btn btn-primary"
+				ng-class="filter === 'yellow' ? 'active' : ''"
+			  	ui-sref="patients({filter: 'yellow', page: undefined})">
+			    <input type="radio" name="status">
+			    <div class="triage-light" style="background:yellow"></div>
+			  </label>
+			  <label class="btn navbar-btn btn-primary"
+				ng-class="filter === 'green' ? 'active' : ''"
+			  	ui-sref="patients({filter: 'green', page: undefined})">
+			    <input type="radio" name="status">
+			    <div class="triage-light" style="background:green"></div>
+			  </label>
+			</div>
+
+	    </div>
+	  </div>
+	</nav>
+</header>
+
+<div class="container-fluid master-list" ui-view>
+	<ul class="pager pager-previous ng-hide" ng-show="previousPage >= 0">
+		<li><a href="#" ui-sref="patients({page: previousPage})">Previous</a></li>
+	</ul>
+
+	<a class="patient thing row" ng-repeat="thing in things" ui-sref="patient({ID: thing.ID, from: thingfrom})" ng-class="(thing.braceletOn === false ? 'patient-bracelet-off' : 'patient-bracelet-on')+(thing.alarmAct ? ' patient-alarm' : '')">
+
+		<div class="col-xs-2 col-sm-1 thing-row-left">
+			<div class="pull-right">
+				<identicon id="thing.ID"></identicon>
+			</div>
+		</div>
+		<div class="col-xs-8 col-sm-10 thing-row-center">
+			<div class="row">
+				<div class="col-sm-6 col-xs-10">
+					<span ng-show="thing.activity >= 0">A<span class="hidden-xs">ctivity</span>: <strong>{{thing.activity}}</strong></span> <span ng-show="thing.activity >= 0 &amp;&amp; (thing.temperature >= 0 || thing.temperature < 0)">|</span>
+					<span ng-show="thing.temperature >= 0 || thing.temperature < 0">T<span class="hidden-xs">emperature</span>: <strong>{{thing.temperature}}</strong></span>
+					<br>
+					<small class="patient-date" ng-if="thing.reportDate"><span am-time-ago="thing.reportDate"></span> - {{thing.reportDate | date:'H\'h\'mm\' d/M/yyyy'}}</small>
+				</div>
+				<div class="col-sm-5 hidden-xs">
+					<span ng-show="thing.locationName" title="{{thing.locationId}}">{{thing.locationName | humanizeCamelCase}}</span>
+					<span ng-show="thing.transporting">Transporting</span>
+					<span ng-show="thing.transferredToDestination &amp;&amp; thing.transferredToDestination != 'Unknown'">Transfered to {{thing.transferredToDestination}}</span>
+					<br>
+					<small ng-show="thing.age &amp;&amp; thing.age >= 0">{{thing.age}} years old</small>
+					<small class="thing-id-identicon">{{thing.ID}}</small>
+				</div>
+				<div class="col-xs-1 alarm-block">
+					<span class="glyphicon glyphicon-off" ng-show="thing.braceletOn===false"></span>
+					<span class="glyphicon glyphicon-bell" ng-show="(thing.alarmAct||thing.alarmTemp)&amp;&amp;(thing.braceletOn!==false)"></span>
+				</div>	
+			</div>
+		</div>
+
+		<div class="col-xs-2 col-sm-1 thing-row-right">
+			<div class="pull-left" ng-show="thing.triage_status &amp;&amp;thing.triage_status !== 'no status entered'">
+				<div class="triage-light" title="{{thing.triage_status}}" ng-style="{background:thing.triage_status}"></div>			
+			</div>
+		</div>
+	</a>
+
+	<p class="empty-message" ng-if="things.length == 0">The list is empty</p>
+
+	<ul class="pager ng-hide" ng-show="nextPage >= 0">
+		<li><a href="#" ui-sref="patients({page: nextPage})">Next</a></li>
+	</ul>
+</div>

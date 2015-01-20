@@ -1,0 +1,36 @@
+<header>
+	<nav class="navbar navbar-default navbar-fixed-top multimedias-navbar" role="navigation">
+		<div class="container-fluid">
+			<div class="row">
+
+			    <a class="navbar-brand col-xs-2" ng-href="{{returnLink}}"><span class="glyphicon" ng-class="from === 'map' ? 'glyphicon-chevron-left' : 'glyphicon-th'"></span></a>
+
+				<h3 class="col-xs-8">Multimedias</h3>
+
+		    	<div class="btn-group navbar-btn-group pull-right" ng-show="!pastSituation">
+					<camera-trigger class="btn navbar-btn btn-primary"></camera-trigger>
+		    	</div>
+			</div>
+		</div>
+	</nav>
+</header>
+
+<div class="container-fluid">
+	<div masonry='{"transitionDuration":"0.4s","itemSelector": ".multimedias-link", "columnWidth": 60, "isFitWidth": true, "gutter": 10}'>
+
+		<div class="multimedias-link vlc-video-stream" mansonry-tile ng-repeat="stream in streams">
+			<videolan src="stream.url" mimetype="stream.mimetype"></videolan>
+		</div>
+		
+		<a ui-sref="media({ID: media.ID, from: 'multimedias'})" masonry-tile class="multimedias-link" ng-repeat="media in medias" ng-class="media.video ? 'multimedias-video-link' : 'multimedias-image-link'">
+			<img ng-src="{{media.video ? media.url : media.full}}" alt=""/>
+			<span class="glyphicon glyphicon-play-circle"></span>
+		</a>	
+		<a ui-sref="thing({ID: tweet.ID, from: 'multimedias'})" masonry-tile class="multimedias-tweet-link multimedias-link" ng-repeat="tweet in tweets" ng-style="{color: tweet.color, background: tweet.background}">
+			<span class="glyphicon glyphicon-comment"></span> 
+			{{tweet.description}}
+		</a>
+
+	</div>
+
+</div>

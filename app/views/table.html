@@ -1,0 +1,111 @@
+<header>
+	<nav class="navbar navbar-default navbar-fixed-top master-list-navbar" role="navigation">
+		<div class="container-fluid">
+			<div class="row">
+				
+				<a class="navbar-brand col-xs-2" href="#" ng-href="{{returnLink}}"><span class="glyphicon" ng-class="from === 'map' ? 'glyphicon-chevron-left' : 'glyphicon-th'"></span></a>
+
+				<h3 class="col-sm-6 col-sm-push-1 col-xs-5">{{typeName}}</h3>
+
+				<div class="btn-group navbar-btn-group pull-right" data-toggle="buttons" ng-if="typeName==='Beacons'">
+					<label class="btn navbar-btn btn-primary"
+						ng-class="filter === 'all' ? 'active' : ''"
+						ui-sref="table({filter: 'all', page: undefined})">
+						<input type="radio" name="status"> All
+					</label>
+					<label class="btn navbar-btn btn-primary"
+						ng-class="filter === 'safe:false' ? 'active' : ''"
+						ui-sref="table({filter: 'safe:false', page: undefined})">
+						<input type="radio" name="status">
+						Unsafe
+					</label>
+					<label class="btn navbar-btn btn-primary"
+						ng-class="filter === 'safe:true' ? 'active' : ''"
+						ui-sref="table({filter: 'safe:true', page: undefined})">
+						<input type="radio" name="status">
+						Safe
+					</label>
+					<label class="btn navbar-btn btn-primary"
+						ng-class="filter === 'rescued:true' ? 'active' : ''"
+						ui-sref="table({filter: 'rescued:true', page: undefined})">
+						<input type="radio" name="status">
+						Rescued
+					</label>
+				</div>
+				<div class="btn-group navbar-btn-group pull-right" data-toggle="buttons" ng-if="typeName==='Orders'">
+					<label class="btn navbar-btn btn-primary"
+						ng-class="filter === 'all' ? 'active' : ''"
+						ui-sref="table({filter: 'all', page: undefined})">
+						<input type="radio" name="status"> All
+					</label>
+					<label class="btn navbar-btn btn-primary"
+						ng-class="filter === 'accepted:false' ? 'active' : ''"
+						ui-sref="table({filter: 'accepted:false', page: undefined})">
+						<input type="radio" name="status">
+						Waiting
+					</label>
+					<label class="btn navbar-btn btn-primary"
+						ng-class="filter === 'accepted:true' ? 'active' : ''"
+						ui-sref="table({filter: 'accepted:true', page: undefined})">
+						<input type="radio" name="status">
+						Accepted
+					</label>
+					<label class="btn navbar-btn btn-primary"
+						ng-class="filter === 'done:true' ? 'active' : ''"
+						ui-sref="table({filter: 'done:true', page: undefined})">
+						<input type="radio" name="status">
+						Done
+					</label>
+				</div>
+				<div class="btn-group navbar-btn-group pull-right" data-toggle="buttons" ng-if="typeName==='Resources'">
+					<label class="btn navbar-btn btn-primary"
+						ng-class="filter === 'all' ? 'active' : ''"
+						ui-sref="table({filter: 'all', page: undefined})">
+						<input type="radio" name="status"> All
+					</label>
+					<label class="btn navbar-btn btn-primary"
+						ng-class="filter === 'status:unassigned' ? 'active' : ''"
+						ui-sref="table({filter: 'status:unassigned', page: undefined})">
+						<input type="radio" name="status">
+						Unassigned
+					</label>
+					<label class="btn navbar-btn btn-primary"
+						ng-class="filter === 'safe:true' ? 'active' : ''"
+						ui-sref="table({filter: 'status:!unassigned', page: undefined})">
+						<input type="radio" name="status">
+						Assigned
+					</label>
+				</div>
+			</div>
+		</div>
+	</nav>
+</header>
+
+<div class="container-fluid master-list" ui-view>
+	<ul class="pager pager-previous ng-hide" ng-show="previousPage >= 0">
+		<li><a href="#" ui-sref="table({page: previousPage})">Previous</a></li>
+	</ul>
+
+	<a class="thing row" ng-repeat="thing in things" ui-sref="thing({ID: thing.ID, from: thingfrom})">
+		<div class="col-xs-2 col-sm-1 thing-row-left">
+			<div class="pull-right">
+				<identicon id="thing.ID"></identicon>
+			</div>
+		</div>
+		<div class="col-xs-8 col-sm-10 thing-row-center">
+			{{thing._masterName}}
+		</div>
+
+		<div class="col-xs-2 col-sm-1 thing-row-right">
+			<div class="pull-left">
+				<master-icon thingid="{{thing.ID}}"></master-icon>
+			</div>
+		</div>
+	</a>
+
+	<p class="empty-message" ng-if="things.length == 0">The list is empty</p>
+
+	<ul class="pager ng-hide" ng-show="nextPage >= 0">
+		<li><a href="#" ui-sref="table({page: nextPage})">Next</a></li>
+	</ul>
+</div>
