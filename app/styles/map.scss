@@ -24,6 +24,22 @@
     }
 }
 
+#streetview {
+    position:absolute;
+    left:0;
+    right:0;
+    bottom:0;
+    top:50px;
+}
+
+#streetview-thing {
+   height:200px; 
+}
+
+/*#map-root {
+    top:50px;
+}*/
+
 .leaflet-popup-content-wrapper {
     border-radius:0;
     position:relative;
@@ -45,25 +61,8 @@
 
         img {
             flex-shrink: 0;
-        }
-
-        &.with-identicon {
-            position: relative;
-            padding: 5px 10px 4px 52px;
-            min-height: 41px;
-
-            img {
-                image-rendering: pixelated;
-                image-rendering:-webkit-optimize-contrast;
-                image-rendering: -moz-crisp-edges;
-                -ms-interpolation-mode: nearest-neighbor;
-                width:41px;
-                height:41px;
-
-                position: absolute;
-                left: 0;
-                top: 0;
-            }
+            height:128px;
+            width:128px;
         }
 
         &.with-media {
@@ -72,8 +71,20 @@
             min-height: 41px;
             min-width:255px;
             img {
-                margin-right:21px;
+                margin-right:11px;
             }
+
+            & > div {
+                margin-top:10px;
+                margin-bottom:10px;
+                margin-right:4px;
+                max-height: 108px;
+            }
+        }
+        &.without-media {
+            padding: 5px 10px 4px 10px;
+            min-height: 41px;
+            position: relative;
         }
     }
 
@@ -81,6 +92,25 @@
     font-weight: bold;
     margin:0;
 
+}
+
+.gm-style-iw > div > div {
+    cursor:pointer;
+    overflow:hidden;
+    margin-top:6px;
+    -webkit-user-select: none;
+       -moz-user-select: none;
+            user-select: none;
+    img {
+        height:128px;
+        width:128px;
+        float:left;
+        margin:0px 15px 15px 0;
+    }
+
+    /*& > div {
+        margin-top: 6px;
+    }*/
 }
 
 html:not(.disable-markers-animations) {
@@ -223,5 +253,58 @@ html:not(.disable-markers-animations).popup-transition .leaflet-popup{
     .mappaint-switch.enabled {
         background-image: url("/images/ic_close_black_48dp.png");
         background-size: 24px 24px;
+    }
+}
+
+.utmost-buttons-view {
+    z-index: 099;
+    position: fixed;
+    bottom: 50px;
+    right: 50px;
+
+    & > div {
+        float:right;
+        margin-left:20px;
+        height: 70px;
+        width: 70px;
+        border-radius: 50%;
+        box-shadow: 1px 3px 7px 3px rgba(0,0,0,.5);
+        text-align: center;
+        line-height: 70px;
+        font-size: 32px;
+        white-space: nowrap;
+        color: white;
+        padding-top:3px;
+        &.utmost-add-button {
+            padding: 3px 0 0 4px;
+        }
+        &.utmost-remove-button {
+            padding-top:4px;
+            background: #333333;
+            background: radial-gradient(ellipse at bottom left, ligten(#333333, 20%) 0%,#333333 1%,#333333 100%);
+            &:hover {
+                background: radial-gradient(ellipse at bottom left, lighten(#333333, 20%) 98%,#333333 99%,#333333 100%);
+            }
+        }
+        &.utmost-ok-button {
+            $background-ok-button: rgb(47, 213, 62);
+            background: $background-ok-button;
+            background: radial-gradient(ellipse at bottom left, ligten($background-ok-button, 20%) 0%,$background-ok-button 1%,$background-ok-button 100%);
+            &:hover {
+                background: radial-gradient(ellipse at bottom left, lighten($background-ok-button, 20%) 98%,$background-ok-button 99%,$background-ok-button 100%);
+            }
+        }
+
+        cursor:pointer;
+        transition: background-image 0.33s ease;
+        background: rgb(255,75,0);
+        /*background: linear-gradient(200deg, #ff4b00 0%,#ff4b00 99%,#ffa37f 100%);*/
+        //.utmost-add-button {
+        transition: background-image 0.33s ease;
+        background: radial-gradient(ellipse at bottom left, #ffa37f 0%,#ff4b00 1%,#ff4b00 100%);
+
+        &:hover {
+        background: radial-gradient(ellipse at bottom left, #ffa37f 98%,#ff4b00 99%,#ff4b00 100%);
+        }
     }
 }

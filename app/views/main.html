@@ -96,19 +96,6 @@
 			</div>
 		</div>
 		<div class="col-sm-2 col-md-2">
-			<div class="row chat-block" id="main-chat" ng-controller="MessengerCtrl">
-				<h3 ui-sref="messenger">Chat</h3>
-
-				<div class="chat-area chat-scroll-area" ui-sref="messenger">
-					<chat-message ng-repeat="message in messages" thing="message"></chat-message>
-				</div>
-
-				<div class="chat-input">
-					<form ng-submit="send()">
-						<input type="text" class="form-control" ng-model="messageContent" tabindex="1" required ng-disabled="pastSituation"/>
-					</form>
-				</div>
-			</div>
 			<div class="row">
 				<div class="infoblock timeline-block col-xs-12" id="main-timeline" ui-sref="timeline">
 					<h3>Timeline</h3>

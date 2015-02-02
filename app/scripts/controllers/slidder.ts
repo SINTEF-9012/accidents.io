@@ -1,6 +1,5 @@
 /// <reference path="./../../bower_components/DefinitelyTyped/angularjs/angular.d.ts" />
 /// <reference path="./../../bower_components/DefinitelyTyped/angular-ui/angular-ui-router.d.ts" />
-/// <reference path="./../../bower_components/DefinitelyTyped/geojson/geojson.d.ts" />
 
 /// <reference path="./../references/app.d.ts" />
 /// <reference path="./../references/generic.d.ts" />
@@ -22,28 +21,26 @@ angular.module('mobileMasterApp')
 	var address = null;
 	var search = throttle(() => {
 		if (!address) return;
-		geocodingService.forward(address, (geojson: GeoJSON.FeatureCollection) => {
-			if (!geojson || !geojson.features || !geojson.features.length) {
+		geocodingService.forward(address,(data: any) => {
+			var response = data.Response;
+			if (!response || !response.View || !response.View.length ||
+				!response.View[0].Result || !response.View[0].Result.length ||
+				!response.View[0].Result[0].Location) {
 				notify({ message: "No location found for " + address, classes: "alert-warning" });
 				return;
 			}
 
-			console.log(geojson.features)
-			var feature = geojson.features[0];
-			if (feature.bbox) {
-				masterMap.fitBounds(new L.LatLngBounds(
-					new L.LatLng(feature.bbox[1], feature.bbox[0]),
-					new L.LatLng(feature.bbox[3], feature.bbox[2])));
-			}
-			else if ((<any>feature).center) {
-				console.log("only center");
-				masterMap.setView(new L.LatLng((<any>feature).center[0], (<any>feature).center[1]), 16);
-			}
+			var mapView = response.View[0].Result[0].Location.MapView;
+			masterMap.fitBounds(new L.LatLngBounds(
+				new L.LatLng(mapView.BottomRight.Latitude, mapView.BottomRight.Longitude),
+				new L.LatLng(mapView.TopLeft.Latitude, mapView.TopLeft.Longitude)));
 		});
 	}, 1000);
 
 	$scope.locate = (form) => {
-		address = form.address;
-		search();
+		if (form) {
+			address = form.address;
+			search();
+		}
 	};
 });

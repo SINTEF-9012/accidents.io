@@ -3,6 +3,7 @@
 /// <reference path="./../../bower_components/DefinitelyTyped/leaflet/leaflet.d.ts" />
 /// <reference path="./../../bower_components/DefinitelyTyped/lodash/lodash.d.ts" />
 /// <reference path="./../../bower_components/DefinitelyTyped/moment/moment.d.ts" />
+/// <reference path="./../../bower_components/DefinitelyTyped/googlemaps/google.maps.d.ts" />
 
 /// <reference path="./../references/generic.d.ts" />
 /// <reference path="./../references/app.d.ts" />
@@ -38,7 +39,7 @@ angular.module('mobileMasterApp').controller('ThingCtrl', (
 
 	var id = $stateParams.ID;
 	var isPatient = $state.is('patient'),
-		stateBack = isPatient ? 'patients' : 'table',
+		stateBack = 'map.slidder',
 		stateInfos = { thingtype: 'all' },
 		isMedia = false;
 
@@ -53,6 +54,29 @@ angular.module('mobileMasterApp').controller('ThingCtrl', (
 	}
 
 	var jwindow = $($window), jMap = $('#thing-map'), jView = $('#thing-view');
+
+	var panorama = new google.maps.StreetViewPanorama(document.getElementById("streetview-thing"), {
+		zoomControl:false 
+	});
+	var panoramaService = new google.maps.StreetViewService;
+	var setStreetView = _.throttle((googleLatLng) => {
+		panorama.setPosition(googleLatLng);
+		panoramaService.getPanoramaByLocation(googleLatLng, 42, (panoData) => {
+			if (panoData == null) {
+				return;
+			}
+
+			var panoCenter = panoData.location.latLng;
+			var heading = google.maps.geometry.spherical.computeHeading(panoCenter, googleLatLng);
+			var pov = panorama.getPov();
+			pov.heading = heading;
+			panorama.setPov(pov);
+			var marker = new google.maps.Marker({
+				map: panorama,
+				position: googleLatLng
+			});
+		});
+	}, 5000);
 
 	var deleteTimer = 0;
 	$scope.startDeleteTimer = () => {
@@ -150,6 +174,7 @@ angular.module('mobileMasterApp').controller('ThingCtrl', (
 			if (!location || isNaN(location.Latitude) || isNaN(location.Longitude)) {
 				$scope.hideMap = true;
 			} else {
+
 				$scope.hideMap = false;
 
 				masterMap.setSelectedThing(id, location.Latitude, location.Longitude);
@@ -232,7 +257,12 @@ angular.module('mobileMasterApp').controller('ThingCtrl', (
 				oldTime = now;
 				oldZoom = zoom;
 				oldBounds = mapBounds;
+
+				// canard
+				var googleLatLng = new google.maps.LatLng(location.Latitude, location.Longitude);
+				setStreetView(googleLatLng);
 			}
+
 
 			var type = itsa.typefrom(thing);
 			if ($stateParams.from && $stateParams.from.indexOf('list-') === 0) {
@@ -248,7 +278,18 @@ angular.module('mobileMasterApp').controller('ThingCtrl', (
 			$scope.canDelete = Knowledge.canDelete(thing);
 
 			var url = $scope.thing.url;
-			isMedia = url != null && itsa.media(thing);
+			if (!url) {
+				if (thing.Type && thing.Type.Name.indexOf("aftenposten") !== -1 && thing.HasProperty("bilde")) {
+					url = thing.String('bilde');
+					if (url) {
+						url = "http://mm.aftenposten.no/2014/09/04-sykkel/data/images/600_" + url;
+					}
+				} else if (thing.HasProperty("streetview")) {
+					url = thing.String('streetview');
+				}
+			}
+
+			isMedia = url != null;
 
 			if (isMedia) {
 
@@ -368,7 +409,7 @@ angular.module('mobileMasterApp').controller('ThingCtrl', (
 		if (destroyed) {
 			return;
 		}
-
+		return;
 		var width = jwindow.width();
 
 		setTilesColors(tileColor);
@@ -441,7 +482,6 @@ angular.module('mobileMasterApp').controller('ThingCtrl', (
 	masterMap.closePopup();
 	masterMap.enableInteractions();
 	masterMap.enableScale();
-	masterMap.disableMiniMap();
 	masterMap.filterThing(id);
 
 
@@ -489,6 +529,8 @@ angular.module('mobileMasterApp').controller('ThingCtrl', (
 	setLayout();
 
 	function setTilesColors(color) {
+		// TODO
+		return;
 		if (!color || $scope.unfound) return;
 		tileColor = color;
 		var match = color.match(/rgb\((\d+),(\d+),(\d+)\)/),
@@ -513,10 +555,11 @@ angular.module('mobileMasterApp').controller('ThingCtrl', (
 	}
 
 	// ReSharper disable once ExpressionIsAlwaysConst
-	if (!isMedia) {
+	/*if (!isMedia) {
 		var imgIdenticon = $('img.identicon');
 
 		if (colorFromImage.hasCache(imgIdenticon.get(0))) {
+							console.log(prop.Key[0]);
 			colorFromImage.applyColor(imgIdenticon.get(0), setTilesColors, true);
 		} else {
 			(<any>imgIdenticon).imagesLoaded(() => {
@@ -526,6 +569,6 @@ angular.module('mobileMasterApp').controller('ThingCtrl', (
 				}
 			});
 		}
-	}
+	}*/
 
 }); 

@@ -150,6 +150,10 @@ master-icon {
 	background-size:100% 100%;
 }
 
+&.picture.with-url {
+	border-radius:4px;
+	box-shadow:0px 0px 6px rgba(0,0,0,0.33);
+}
 
 /*&.others {
 	color: white;
@@ -295,6 +299,7 @@ master-icon {
 	}
 }
 
+
 .glow master-icon, master-icon.glow {
 	&:after {
 		background: url(../images/glow-background.png) no-repeat center;
@@ -344,6 +349,25 @@ master-icon {
 			}
 		}
 	}
+	
+	&.picture.with-url {
+		width:64px;
+		height:64px;
+		margin-left:-12px;
+		margin-top:-12px;
+
+		&.tweet {
+			width:48px;
+			height:48px;
+			margin-left:-4px;
+			margin-top:-4px;
+		}
+
+		&.selected {
+			box-shadow: 0px 0px 30px rgb(0, 82, 255), 0px 0px 7px rgb(85, 106, 255);
+		}
+	}
+
 
 }
 
@@ -531,7 +555,13 @@ master-icon.hospitalType {
 	font-size: 20px;
 	color: white;
 	line-height: 36px;
+
 }
+.map master-icon.glyph.tweet.picture .glyphicon {
+	color: rgba(255,255,255,0.75);
+	line-height: 48px;
+}
+
 .map master-icon.glyph {
 	background: rgba(0,0,0,0.7);
 	border-radius: 50%;

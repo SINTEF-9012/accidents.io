@@ -8,7 +8,6 @@ angular.module('mobileMasterApp')
   .directive('chatMessage', (authenticationService: AuthenticationService) => {
     return {
         template: '<div class="chat-message" ng-class="messageClass">' +
-        '<identicon id="thing.author" />' +
 		'<p class="message">{{thing.content || " "}}</p>' +
 		'<p class="chat-infos">' +
 	        '<span class="author">{{thing.author}}</span>' +

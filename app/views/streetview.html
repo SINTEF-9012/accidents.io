@@ -1,0 +1,21 @@
+<header>
+	<nav class="navbar navbar-default navbar-fixed-top navbar-utmost" role="navigation">
+		<div class="container-fluid">
+			<div class="row infos">
+				<a class="navbar-brand col-xs-2" ui-sref="map.slidder"><span class="glyphicon glyphicon-chevron-left"></span></a>
+      	<div class="infos-tools pull-right">
+		<form class="form-inline">
+			<input type="search" class="form-control" ng-model="search.address" tabindex="20" autocorrect="off">
+			<button type="submit" class="btn btn-flat" ng-click="locate(search)"><span class="glyphicon glyphicon-search"></span></button>
+		</form>
+		</div>
+			</div>
+		</div>
+	</nav>
+</header>
+<div id="streetview"></div>
+<div class="utmost-buttons-view">
+	<div class="utmost-add-button" ng-show="!addMode" ng-click="add()"><span class="glyphicon glyphicon-plus"></span></div>
+	<div class="utmost-ok-button" ng-show="addMode" ng-click="validAdd()"><span class="glyphicon glyphicon-ok"></span></div>
+	<div class="utmost-remove-button" ng-show="addMode" ng-click="cancelAdd()"><span class="glyphicon glyphicon-remove"></span></div>
+</div>

@@ -3,21 +3,25 @@
 
 	<div class="infos-tools pull-right">
 		<form class="form-inline">
-			<input type="search" class="form-control" ng-model="search.address" tabindex="20">
+			<input type="search" class="form-control" ng-model="search.address" tabindex="20" autocorrect="off">
 			<button type="submit" class="btn btn-flat" ng-click="locate(search)"><span class="glyphicon glyphicon-search"></span></button>
 		</form>
 		<div class="btn-group" ng-if="!pastSituation">
-			<a class="btn btn-flat" ui-sref="add" ng-hide="pastSituation">
+<!-- 			<a class="btn btn-flat" ui-sref="add" ng-hide="pastSituation">
 				<span class="glyphicon glyphicon-map-marker"></span>	
 			</a>
-			<camera-trigger class="btn btn-flat"></camera-trigger>
+ -->			<camera-trigger class="btn btn-flat"></camera-trigger>
 			<a class="btn btn-flat" ui-sref="map.paint">
 				<span class="glyphicon glyphicon-pencil"></span>
 			</a>
-			<a class="btn btn-flat" ui-sref="background">
+<!-- 			<a class="btn btn-flat" ui-sref="background">
 				<span class="glyphicon glyphicon-globe"></span>
 			</a>
-		</div>
+ -->		
+ 			<a class="btn btn-flat" ng-click="goStreetView()">
+	 			<i class="fa fa-street-view"></i>
+ 			</a>
+ 			</div>
 		<div class="btn-group" ng-if="pastSituation">
 			<a class="btn btn-flat" ui-sref="background">
 				<span class="glyphicon glyphicon-globe"></span>

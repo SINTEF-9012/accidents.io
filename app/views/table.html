@@ -87,11 +87,6 @@
 	</ul>
 
 	<a class="thing row" ng-repeat="thing in things" ui-sref="thing({ID: thing.ID, from: thingfrom})">
-		<div class="col-xs-2 col-sm-1 thing-row-left">
-			<div class="pull-right">
-				<identicon id="thing.ID"></identicon>
-			</div>
-		</div>
 		<div class="col-xs-8 col-sm-10 thing-row-center">
 			{{thing._masterName}}
 		</div>

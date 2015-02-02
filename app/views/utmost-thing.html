@@ -1,0 +1,38 @@
+<header>
+	<nav class="navbar navbar-default navbar-fixed-top navbar-utmost" role="navigation">
+		<div class="container-fluid">
+			<div class="row">
+				
+				<a class="navbar-brand col-xs-2" ng-href="{{returnLink}}"><span class="glyphicon glyphicon-chevron-left"></span></a>
+
+				<a class="vote upvote"></a>
+
+				<div class="pull-right infos-fa">
+					<div class="btn-group btn-group-fa">
+						<a class="btn btn-flat" ng-click="showShare=true" ng-show="!showShare" title="Share">
+							<i class="fa fa-share-alt-square"></i>
+						</a>
+						<div class="share-buttons pull-left" share-square="true" share-links="Facebook, Twitter, LinkedIn, Google-Plus" share-title="Article Title" ng-show="showShare"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</nav>
+</header>
+
+<div class="container-fluid">
+	<h3 class="col-xs-7" title="{{thing.type}}">
+		<span class="text-danger ng-hide" ng-show="unfound">Risk not found</span>
+	</h3>
+	<p ng-if="isPicture" class="media-view">
+		<img ng-src="{{thumbnailUrl}}" alt="" class="img-thumbnail" id="camera-thumbnail" ng-click="$parent.$parent.showPicture()"/>
+	</p>
+{{thing.description}}
+
+<div id="streetview-thing">
+streetview	
+</div>
+
+<!-- <div disqus="thing.ID">canard et lapin</div> -->
+
+</div>

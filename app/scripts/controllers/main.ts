@@ -17,7 +17,8 @@ angular.module('mobileMasterApp')
             center: new L.LatLng(59.911111, 10.752778),
             zoomControl: false,
             attributionControl: false,
-            maxZoom:20,
+            maxZoom: 20,
+			minZoom: 2,
 			keyboard: false,
 			trackResize: false
         })
@@ -25,7 +26,7 @@ angular.module('mobileMasterApp')
             name: "MapBox",
             iconPath: "layer_mapbox.png",
 			create: () => {
-                return new L.TileLayer('https://{s}.tiles.mapbox.com/v3/apultier.gefc9emp/{z}/{x}/{y}.png', {
+                return new L.TileLayer('https://{s}.tiles.mapbox.com/v4/apultier.609389ae/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiYXB1bHRpZXIiLCJhIjoiWGJVRDYtYyJ9.4CJkS86ESYY2FoHdmw1kgQ', {
                     detectRetina: true,
 					reuseTiles: true,
 					maxZoom:20,
@@ -184,9 +185,7 @@ angular.module('mobileMasterApp')
 	var jMap = $('#main-map'),
 		jMapBody = jMap.children(),
 		jlink = $('#main-map-link'),
-		jChat = $('#main-chat'),
 		jMediablock = $('#main-mediablock'),
-		jChatScrollarea = $('.chat-scroll-area').get(0),
 		jTimeline = $('#main-timeline');
 
 	persistentMap.restorePersistentLayer(masterMap);
@@ -281,7 +280,6 @@ angular.module('mobileMasterApp')
 
 		blocs.height(blockHeight);
 		jMap.height(mapHeight);
-		jChat.height(mapHeight - 8);
 		jTimeline.height(mediablockHeight - 12);
 
 		window.setImmediate(() => {
@@ -290,7 +288,6 @@ angular.module('mobileMasterApp')
 			}
 			jlink.height(mapHeight).width(jMap.width()).offset(jMap.offset());
 
-			jChatScrollarea.scrollTop = jChatScrollarea.scrollHeight;
 			masterMap.moveTo(jMapBody);
 			_.each(patientsChart.segments, (segment:any) => segment.save());
 			patientsChart.resize(() => {

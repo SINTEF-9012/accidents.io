@@ -2,6 +2,7 @@
 /// <reference path="./../../bower_components/DefinitelyTyped/angular-ui/angular-ui-router.d.ts" />
 /// <reference path="./../../bower_components/DefinitelyTyped/angular-hotkeys/angular-hotkeys.d.ts" />
 /// <reference path="./../../bower_components/DefinitelyTyped/leaflet/leaflet.d.ts" />
+/// <reference path="./../../bower_components/DefinitelyTyped/googlemaps/google.maps.d.ts" />
 
 /// <reference path="./../references/app.d.ts" />
 /// <reference path="./../references/generic.d.ts" />
@@ -13,6 +14,7 @@
 angular.module('mobileMasterApp')
 .controller('MapCtrl', (
 	$scope,
+	cfpLoadingBar: any,
 	notify : angularNotify,
     masterMap : Master.Map,
     thingModel : ThingModelService,
@@ -66,15 +68,31 @@ angular.module('mobileMasterApp')
 		});
 
 
+	var loadStreetMap = (latlng, message, move=false) => {
+		var panoramaService = new google.maps.StreetViewService;
+
+		cfpLoadingBar.start();
+		panoramaService.getPanoramaByLocation(latlng, 100, (panoData) => {
+			cfpLoadingBar.complete();
+			if (panoData == null) {
+				notify({ message: message, classes: "alert-warning" });
+				return;
+			}
+
+			if (move) {
+				$state.go("streetview", { lat: panoData.location.latLng.lat(), lng: panoData.location.latLng.lng() });
+			} else {
+				$state.go("streetview", { lat: latlng.lat(), lng: latlng.lng() });
+			}
+		});
+	};
+
 	var contextmenu = (e: L.LeafletMouseEvent) => {
 		if ($state.is('map.paint')) {
 			return;
 		}
-		if ($rootScope.pastSituation) {
-			notify({ message: "Live mode is required for adding new elements.", classes: "alert-warning" });
-		} else {
-			$state.go('add', e.latlng);
-		}
+
+		loadStreetMap(new google.maps.LatLng(e.latlng.lat, e.latlng.lng), "Sorry, no streetview found at this position.");
 	};
 
 	masterMap.on('contextmenu', contextmenu);
@@ -98,4 +116,11 @@ angular.module('mobileMasterApp')
 
 	setMargin();
 	angular.element($window).resize(setMargin);
+
+	$scope.goStreetView = () => {
+		var center = masterMap.getCenter();
+		loadStreetMap(new google.maps.LatLng(center.lat, center.lng),
+			"Sorry, no streetview found around the map center. Try to zoom closer to a main road, or " + (L.Browser.touch ? "touch hold" : "rightclick") + " on the map.",
+			true);
+	};
 });

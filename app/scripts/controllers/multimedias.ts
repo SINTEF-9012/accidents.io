@@ -107,18 +107,19 @@ angular.module('mobileMasterApp')
 				ID: thing.ID,
 				description: thing.String("description"),
 				color: 'white',
-				background: 'black'
+				background: 'black',
+				profile_image: null
 			};
 
 			$scope.tweets.push(tweet);
 
-			colorFromImage.applyColor(
-				mediaServerUrl + '/identicon/' + encodeURIComponent(thing.ID) + '/?style=averagewindow',
-				(color) => {
-					tweet.background = color;
-					tweet.color = colorFromImage.whiteOrBlack(color);
-					digestScope();
-				});
+			var color = colorFromImage.colorFromId(thing.ID);
+			tweet.background = color.background;
+			tweet.color = color.foreground;
+
+			if (thing.HasProperty("_profile_image")) {
+				tweet.profile_image = thing.String("_profile_image");
+			}
 		}
 	};
 

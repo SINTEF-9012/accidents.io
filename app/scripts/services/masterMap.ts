@@ -52,6 +52,7 @@
 			settingsService: SettingsService,
 			itsa: ThingIdentifierService,
 			filterService: FilterService,
+			mapPopupService: MapPopupService,
 			$state: ng.ui.IStateService,
 			$stateParams: any,
 			thingModel: ThingModelService) {
@@ -96,7 +97,8 @@
 
 			instance.GamepadController.enable();
 
-			var cluster: PruneCluster.LeafletAdapter = new PruneClusterForLeaflet(60,10);
+			//var cluster: PruneCluster.LeafletAdapter = new PruneClusterForLeaflet(60,10);
+			var cluster: PruneCluster.LeafletAdapter = new PruneClusterForLeaflet(100);
 
 			instance.addLayer(cluster);
 
@@ -156,7 +158,7 @@
 			});
 
 
-			var colors = ['#ff4b00', '#bac900', '#EC1813', '#55BCBE', '#D2204C', '#7109aa', '#ada59a', '#3e647e'],
+			var colors = ['#ff4b00', '#bac900', '#EC1813', '#55BCBE', '#D2204C', '#7109aa', '#ada59a', '#E86100'],
 				// rouge orange, vert pomme, jaune, bleu ciel, magenta, violet, gris beige, bleu marine
 				pi2 = Math.PI * 2;
 
@@ -190,12 +192,12 @@
 				draw: function (canvas, width, height) {
 
 
-					var xa = 2, xb = 50, ya = 18, yb = 21;
+					var xa = 2, xb = 80, ya = 17, yb = 21;
 
 					var r = ya + (this.population - xa) * ((yb - ya) / (xb - xa));
 
 					var radiusMarker = Math.min(r, 21),
-						radiusCenter = 11,
+						radiusCenter = 11.5,
 						center = width / 2;
 
 					if (L.Browser.retina) {
@@ -321,9 +323,6 @@
 
 				marker.setIcon(icon);
 
-				var content = $('<div />');
-
-
 
 				var thing = thingModel.warehouse.GetThing(id);
 
@@ -331,49 +330,18 @@
 					return;
 				}
 
-				var toState = itsa.patient(thing) ? 'patient' : (itsa.media(thing) ? 'media' : 'thing');
+				var content = mapPopupService.generate(thing);
 
-				content.click(() => {
-					$state.go(toState, { ID: id, from: $stateParams.from ? $stateParams.from : 'map' });
-				});
-
-				var name = thingModel.GetThingName(thing);
-
-				if (!name) {
-					if (itsa.patient(thing)) {
-						name = "Patient " + thing.ID;
-					} else {
-						name = thing.Type ? thing.Type.Name : 'unknown object';
-					}
-				}
-
-				content.text(name);
-				var url: string = null, img = $('<img />');
-
-				if (itsa.media(thing)) {
-					url = thing.String('url');
-					if (url) {
-						url = settingsService.getMediaServerUrl() +
-							"/thumbnail/" + url;
-						content.addClass('with-media');
-					}
-				}
-
-				if (!url) {
-					content.addClass('with-identicon');
-					url = settingsService.getMediaServerUrl() + "/identicon/" + encodeURIComponent(id) + "?style=averagewindow";
-				}
-
-				content.prepend(img.attr('src', url));
+				var toState = itsa.risk(thing) ? 'risk' : (itsa.media(thing) ? 'media' : 'thing');
 
 				var popup = (<any>marker).getPopup();
 				(<any>marker)._masterMapThingId = id;
 
 				if (popup) {
-					popup.setContent(content.get(0));
+					popup.setContent(content);
 					popup.update();
 				} else {
-					marker.bindPopup(content.get(0), {
+					marker.bindPopup(content, {
 						closeButton: false,
 						keepInView: false
 					});

@@ -86,7 +86,8 @@
 				healthLevel: -1,
 				flammabilityLevel: -1,
 				instabilityLevel: -1,
-				hospitalName: -2
+				hospitalName: -2,
+				streetview: -2
 			}
 		}
 	];
@@ -155,6 +156,10 @@
 						if (prop.Key !== "undefined") {
 							var score = scores[prop.Key] || 0;
 
+							if (prop.Key[0] === '_') {
+								--score;
+							}
+
 							var scopeProp: any = {
 								key: prop.Key,
 								required: prop.Required,
@@ -188,6 +193,10 @@
 					}
 
 					var score = scores[prop.Key] || 0;
+
+					if (prop.Key[0] === '_') {
+						--score;
+					}
 
 					var scopeProp = {
 						key: key,

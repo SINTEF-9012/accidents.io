@@ -109,7 +109,6 @@ angular.module('mobileMasterApp')
 	masterMap.closePopup();
 	masterMap.enableInteractions();
 	masterMap.enableScale();
-	masterMap.disableMiniMap();
 
 	var jwindow = $($window), jMap = $('#thing-map');
 

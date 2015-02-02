@@ -191,6 +191,7 @@ interface ColorFromImageService {
 	whiteOrBlack: (color: string) => string;
 	applyColor: (img: any, callback: (color: string) => void, exclude?: boolean) => void;
 	hasCache: (img: any) => boolean;
+	colorFromId: (id: string) => {background: string; foreground: string};
 }
 
 interface AuthenticationService {
@@ -204,4 +205,8 @@ interface RrdService {
 
 interface GeocodingService {
 	forward: (address: string, callback: (geojson: any) => void) => void;
+}
+
+interface MapPopupService {
+	generate: (thing: ThingModel.Thing) => HTMLElement;
 }

@@ -42,9 +42,13 @@ body {
     left:0;
     right:0;
     top:0;
+    min-height:50px;
 
-    background: rgb(124, 179, 66);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+    //background: rgb(124, 179, 66);
+    background:$utmost-color;
+    background-image:url(/images/background-moche.png);
+    background-repeat: repeat;
+    border-bottom: 1px solid darken($utmost-color, 6.5%);
     //padding-bottom: 4px;
     box-shadow: 0px 1px 4px rgba(0,0,0,0.3);
 
@@ -58,12 +62,21 @@ body {
 
     h3 {
         float: left;
-        padding: 8px 4px 0px 10px;
+        padding: 0px 8px 0px 12px;
         margin: 0;
         /* line-height: 36px; */
         /* font-weight: lighter; */
         color: white;
-    user-select: none;
+        user-select: none;
+        line-height: 50px;
+    }
+
+
+}
+
+#view-slidder, .navbar-utmost {
+    .infos-tools {
+        padding:5px 8px;
     }
 
     form {
@@ -72,11 +85,24 @@ body {
         input {
             max-width:160px;
             display:inline-block;
-            background:rgb(96,137,50);
+            //background:rgb(96,137,50);
+            background:rgba(0,0,0,0.16);
             border:none;
             color:white;
             vertical-align:middle;
         }
+    }
+}
+
+.navbar-utmost form {
+    margin-right:-25px;
+}
+.navbar .form-group {
+    color:white;
+    input {
+        background:rgba(0,0,0,0.16);
+        border:none;
+        color:white;
     }
 }
 
@@ -296,6 +322,10 @@ height: 672px !important;
 
         .infos-icons .btn-group {
             margin-left:8px;
+        }
+
+        .fa {
+            font-size:25px;
         }
 	}
 
@@ -625,6 +655,12 @@ header + .master-list {
 .timeline-navbar {
    background-color: $timeline-bg; 
    border-color: darken($timeline-bg, 6.5%);
+}
+
+.navbar-utmost {
+   background-color: $utmost-color; 
+   border-color: darken($utmost-color, 6.5%);
+   box-shadow: 0px 1px 4px rgba(0,0,0,0.3);
 }
 
 .master-list-navbar, .messenger-navbar,
@@ -1043,3 +1079,24 @@ div:nth-child(3n+1) > .thingInfobox {
     overflow:hidden;
 }
 
+header .navbar .btn-group.btn-group-fa {
+    margin-right:0;
+}
+
+.infos-fa {
+    padding:0px;
+
+    .btn-flat, .share-buttons > a {
+        color:white;
+        font-size:36px;
+        &:hover {
+            color:darken(white, 4.2%);
+            text-decoration: none;
+        }
+    }
+
+    .share-buttons > a {
+        line-height:50px;
+        margin:0 1px 0 4px;
+    }
+}

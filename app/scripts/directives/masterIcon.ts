@@ -8,6 +8,7 @@
 angular.module('mobileMasterApp')
 	.directive('masterIcon', function (
 		$rootScope: MasterScope.Root,
+		settingsService: SettingsService,
 		thingModel: ThingModelService) {
 
 	var categories = {
@@ -103,6 +104,8 @@ angular.module('mobileMasterApp')
 		return c.append(t);
 	}
 
+	var mediaServerUrl = settingsService.getMediaServerUrl();
+
 	function setIcon(element: JQuery, type: string, thing: ThingModel.Thing, attrs) {
 		if (/patient/i.test(type) && !/patients/i.test(type)) {
 			// triage_status
@@ -119,9 +122,23 @@ angular.module('mobileMasterApp')
 			}
 			element.addClass('patient');
 		} else if (/picture/i.test(type)) {
-			element.append(glyphicon('picture'));
-			element.addClass('glyph picture');
+			if (thing && thing.String("url")) {
+				var thumbnail = mediaServerUrl + "/thumbnail/" + thing.String("url");
+				element.css("background-image", "url(\""+thumbnail+"\")");
+				element.css("background-size", "cover");
+				element.addClass('with-url picture');
+			} else {
+				element.append(glyphicon('picture'));
+				element.addClass('glyph picture');
+			}
 		} else if (/tweet/i.test(type)) {
+			if (thing && thing.String("_profile_image")) {
+				var thumbnail = mediaServerUrl + "/" + thing.String("_profile_image");
+				element.css("background-image", "url(\"" + thumbnail + "\")");
+				element.css("background-size", "cover");
+				element.addClass('tweet with-url picture');
+			}
+
 			element.append(glyphicon('comment'));
 			element.addClass('glyph tweet');
 		} else if (/video/i.test(type)) {
@@ -129,12 +146,12 @@ angular.module('mobileMasterApp')
 			element.addClass('glyph video');
 		} else if (/resources/i.test(type)) {
 			element.addClass('resources');
-		} else if (/(incident|resource|risk|response|beacon)/i.test(type)) {
+		} else if (/(accident|incident|resource|risk|response|beacon)/i.test(type)) {
 
 			var cat: string;
 
 			switch (true) {
-				case /incident/i.test(type):
+				case /(incident|accident)/i.test(type):
 					cat = 'incident';
 					break;	
 				case /risk/i.test(type):

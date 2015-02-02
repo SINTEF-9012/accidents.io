@@ -22,8 +22,10 @@ angular.module('mobileMasterApp', [
 	'FBAngular',
 	'cfp.hotkeys',
 	'ngSanitize',
-	'cgNotify'])
-  .config(($stateProvider, $locationProvider, $urlRouterProvider, cfpLoadingBarProvider, $provide) => {
+	'cgNotify',
+	'td.easySocialShare',
+	'ngDisqus'])
+	.config(($stateProvider, $locationProvider, $urlRouterProvider, cfpLoadingBarProvider, $provide, $disqusProvider) => {
 
 	$provide.decorator("$exceptionHandler", ['$delegate', ($delegate) => {
 		  return (exception, cause) => {
@@ -65,29 +67,10 @@ angular.module('mobileMasterApp', [
 				}
 			}
 		})
-		.state('summary', {
-			url: '/summary',
-			controller: 'SummaryCtrl',
-			templateUrl: 'views/summary.html'
-		})
-		.state('summary.edit', {
-			url: '/editsummary',
-			templateUrl: 'views/editsummary.html'
-		})
-		.state('patients', {
-			url: '/patients?filter&page&from',
-			controller: 'TableCtrl',
-			templateUrl: 'views/patients.html'
-		})
-		.state('patient', {
-			url: '/patient/:ID?from',
-			controller: 'ThingCtrl',
-			templateUrl: 'views/patient.html'
-		})
-		.state('patient.edit', {
-			url: '/edit',
-			controller: 'EditCtrl',
-			templateUrl: 'views/patientedit.html'
+		.state('streetview', {
+			url: '/streetview?lat&lng',
+            controller: 'StreetViewCtrl',
+            templateUrl: 'views/streetview.html'
 		})
         .state('main', {
             url: '/dashboard',
@@ -108,6 +91,11 @@ angular.module('mobileMasterApp', [
 			url: '/filters',
 			controller: 'FiltersCtrl',
 			templateUrl: 'views/filters.html'
+		})
+		.state('risk', {
+			url: '/risk/:ID',
+			controller: 'ThingCtrl',
+			templateUrl: 'views/utmost-thing.html',
 		})
 		.state('thing', {
 			url: '/thing/:ID?from',
@@ -156,11 +144,6 @@ angular.module('mobileMasterApp', [
 			controller: 'EditCtrl',
 			templateUrl: 'views/thingedit.html'
         })
-		.state('messenger', {
-			url: '/messenger?from',
-			controller: 'MessengerCtrl',
-			templateUrl: 'views/messenger.html'
-		})
 		.state('timeline', {
 			url: '/timeline?from',
 			controller: 'TimelineCtrl',
@@ -177,6 +160,7 @@ angular.module('mobileMasterApp', [
 			templateUrl: 'views/checklist.html'
 		});
 
+	$disqusProvider.setShortname("utmost");
   }).run((
 	  $rootScope: MasterScope.Root,
 	  $state: ng.ui.IStateService,
@@ -216,11 +200,6 @@ angular.module('mobileMasterApp', [
 		callback: () => $state.go('multimedias')
 	});
 	hotkeys.add({
-		combo: 'v',
-		description: 'Patients',
-		callback: () => $state.go('patients')
-	});
-	hotkeys.add({
 		combo: 's',
 		description: 'Settings',
 		callback: () => $state.go('settings')
@@ -255,7 +234,7 @@ angular.module('mobileMasterApp', [
 		position: 'right'
     });
 
-  });
+});
 
 
 if (window.navigator.standalone) {

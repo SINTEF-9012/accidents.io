@@ -7,11 +7,12 @@
 angular.module('mobileMasterApp').service('geocodingService', function (
 	$http: ng.IHttpService) {
 
-	var mapboxPublicToken = "pk.eyJ1IjoiYXB1bHRpZXIiLCJhIjoib25CYXRvNCJ9.0oA1cLtUH_V32zw6t2slkg";
-	var mapboxEndpoint = "https://api.tiles.mapbox.com/v4/geocode/mapbox.places/";
+	var hereGeocoderEndPoint = "http://geocoder.cit.api.here.com/6.2/geocode.json";
+	var hereAppId = "rhiOeCVj2hwMLGF4c4Ib";
+	var hereAppCode = "z2R65ZlNkjfRz_9yMb3CIw";
 
 	this.forward = (address: string, callback: (geojson: any) => void) => {
-		$http.get(mapboxEndpoint + encodeURIComponent(address) + ".json?access_token=" + mapboxPublicToken)
+		$http.get(hereGeocoderEndPoint+"?searchtext=" + encodeURIComponent(address) + "&gen=8&app_id=" + hereAppId + "&app_code="+ hereAppCode)
 			.success(callback)
 			.error(() => callback(null));
 	};
