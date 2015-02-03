@@ -1,5 +1,6 @@
 /// <reference path="../../bower_components/ThingModel/TypeScript/build/ThingModel.d.ts" />
 /// <reference path="./../../bower_components/DefinitelyTyped/leaflet/leaflet.d.ts" />
+/// <reference path="./../../bower_components/DefinitelyTyped/googlemaps/google.maps.d.ts" />
 /// <reference path="./../masterScope.d.ts" />
 
 declare module Master {
@@ -214,4 +215,9 @@ interface MapPopupService {
 interface VoteService {
 	vote: (id: string, vote: string) => void;
 	status: (id: string, callback: (vote:string) => void) => void;
+}
+
+interface StreetViewService {
+	create: (container: HTMLElement) => google.maps.StreetViewPanorama;
+	disable: () => void;
 }

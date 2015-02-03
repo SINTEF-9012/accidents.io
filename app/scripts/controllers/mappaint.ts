@@ -41,9 +41,10 @@ angular.module('mobileMasterApp')
 
 	var switchControl = new MapPaint.SwitchControl();
 
+	(<any>$scope.$parent.$parent).hideUtmostButton = true;
 
 	window.setImmediate(() => {
-		masterMap.disableMiniMap();
+		//masterMap.disableMiniMap();
 		masterMap.addControl(switchControl);
 
 		switchControl._container.onclick = () => {
@@ -117,10 +118,10 @@ angular.module('mobileMasterApp')
 
 	$scope.$on('$destroy', () => {
 		mapPaint.disable();
+		(<any>$scope.$parent.$parent).hideUtmostButton = false;
 		window.setImmediate(() => {
 			masterMap.moveTo(jMap);
 			masterMap.removeControl(switchControl);
-			masterMap.enableMiniMap();
 		});
 	});
 });

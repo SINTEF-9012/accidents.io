@@ -29,7 +29,8 @@ angular.module('mobileMasterApp').controller('ThingCtrl', (
 	colorFromImage: ColorFromImageService,
 	notify: angularNotify,
 	rrdService: RrdService,
-	voteService: VoteService
+	voteService: VoteService,
+	streetViewService: StreetViewService
 	) => {
 
 	masterMap.disableSituationOverview();
@@ -91,9 +92,7 @@ angular.module('mobileMasterApp').controller('ThingCtrl', (
 			setLayout();
 			digestScope();
 			if (panorama === null) {
-				panorama = new google.maps.StreetViewPanorama(document.getElementById("streetview-thing"), {
-					zoomControl:false 
-				});
+				panorama = streetViewService.create(document.getElementById("streetview-thing"));
 			}
 			panorama.setPosition(photoGraphPosition);
 
@@ -104,10 +103,10 @@ angular.module('mobileMasterApp').controller('ThingCtrl', (
 			pov.heading = heading;
 			pov.pitch = -10;
 			panorama.setPov(pov);
-			var marker = new google.maps.Marker({
+			/*var marker = new google.maps.Marker({
 				map: panorama,
 				position: googleLatLng
-			});
+			});*/
 		});
 	}, 5000);
 

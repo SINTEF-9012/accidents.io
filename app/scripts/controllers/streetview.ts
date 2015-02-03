@@ -17,7 +17,8 @@ angular.module('mobileMasterApp')
 		geocodingService: GeocodingService,
 		$stateParams,
 		mapPopupService: MapPopupService,
-		notify: angularNotify
+		notify: angularNotify,
+		streetViewService: StreetViewService
 		/*$rootScope: MasterScope.Root,
 		$state: ng.ui.IStateService,
 		settingsService: SettingsService*/) => {
@@ -32,10 +33,8 @@ angular.module('mobileMasterApp')
 
 	var panoramaService = new google.maps.StreetViewService;
 
-	var panorama = new google.maps.StreetViewPanorama(document.getElementById("streetview"), {
-		position: position,
-		addressControl: false
-	});
+	var panorama = streetViewService.create(document.getElementById("streetview"));
+	panorama.setPosition(position);
 
 	panoramaService.getPanoramaByLocation(position, 42, (panoData) => {
 		if (panoData == null) {
@@ -50,105 +49,7 @@ angular.module('mobileMasterApp')
 		pov.heading = heading;
 		panorama.setPov(pov);
 	});
-	var streetViewMarkers: { [id: string]: google.maps.Marker } = {};
 
-	var updateMarkerMap = (marker: google.maps.Marker) => {
-		try {
-			if (google.maps.geometry.spherical.computeDistanceBetween(
-				panorama.getPosition() || position, marker.getPosition()) > 100) {
-				marker.setMap(null);
-			} else if (marker.getMap() !== panorama) {
-				marker.setMap(panorama);
-			}
-		} catch (e) {
-			marker.setMap(null);
-		}
-	};
-
-	google.maps.event.addListener(panorama, 'position_changed',() => {
-		window.setImmediate(() => _.each(streetViewMarkers, updateMarkerMap));
-	});
-
-	var infoWindow = new google.maps.InfoWindow({
-		content: '',
-		maxWidth: 280
-	});
-
-	/*google.maps.event.addDomListener(document.getElementById("streetview"), 'dblclick',(e) => {
-		e.preventDefault();
-		var posBefore = panorama.getPosition(),
-			povBefore = panorama.getPov();
-
-		google.maps.event.addListenerOnce(panorama, "pov_changed",(e) => {
-			console.log("lapin", e)
-			new google.maps.Marker({
-				map: panorama,
-				position: panorama.getPosition(),
-				draggable: true
-			});
-			
-			panorama.setPosition(posBefore);
-			panorama.setPov(povBefore);
-		});
-		console.log("CANARD", e)
-	});
-
-	window.panorama = panorama;*/
-
-	//$('#streetview').click(() => alert("canard"))
-
-	var icon = new google.maps.MarkerImage('/images/gmap-risk-icon.png', new google.maps.Size(64, 64))
-	icon.scaledSize = new google.maps.Size(64, 64);
-
-	var parseThing = (thing: ThingModel.Thing) => {
-		var location = thing.LocationLatLng();
-
-		if (location && !isNaN(location.Latitude) && !isNaN(location.Longitude)) {
-			var marker = new google.maps.Marker({
-				position: new google.maps.LatLng(location.Latitude, location.Longitude),
-				//draggable: true,
-				icon: icon
-			});
-			google.maps.event.addListener(marker, 'click',() => {
-				var content = mapPopupService.generate(thing);
-				content.style.height = '143px';
-				infoWindow.setContent(content);
-				infoWindow.open(panorama, marker);
-			});
-			updateMarkerMap(marker);
-			streetViewMarkers[thing.ID] = marker;
-		}
-	};
-
-	_.each(thingModel.warehouse.Things, parseThing);
-
-	var observer = {
-		New: parseThing,
-		Updated: (thing: ThingModel.Thing) => {
-			if (streetViewMarkers.hasOwnProperty(thing.ID)) {
-				var location = thing.LocationLatLng();
-
-				if (location && !isNaN(location.Latitude) && !isNaN(location.Longitude)) {
-					streetViewMarkers[thing.ID].setPosition(
-						new google.maps.LatLng(location.Latitude, location.Longitude));
-					updateMarkerMap(streetViewMarkers[thing.ID]);
-				}
-			}
-		},
-		Deleted: (thing: ThingModel.Thing) => {
-			if (streetViewMarkers.hasOwnProperty(thing.ID)) {
-				streetViewMarkers[thing.ID].setMap(null);
-				delete streetViewMarkers[thing.ID];
-			}
-		},
-		Define: () => {}
-	};
-
-	thingModel.warehouse.RegisterObserver(observer);
-
-	$scope.$on('$destroy', () => {
-		thingModel.warehouse.UnregisterObserver(observer);
-	});
 
 	$('header').on('touchmove',() => false);
 
@@ -180,6 +81,9 @@ angular.module('mobileMasterApp')
 
 	var addMarker: google.maps.Marker = null;
 
+	var icon = new google.maps.MarkerImage('/images/gmap-risk-icon.png', new google.maps.Size(64, 64))
+	icon.scaledSize = new google.maps.Size(64, 64);
+
 	$scope.add = () => {
 		$scope.addMode = true;
 		var pos = google.maps.geometry.spherical.computeOffset(panorama.getPosition(), 6, panorama.getPov().heading);
@@ -200,4 +104,8 @@ angular.module('mobileMasterApp')
 		addMarker.setMap(null);
 		$scope.addMode = false;
 	};
+
+	$scope.$on('$destroy', () => {
+		streetViewService.disable();
+	});
 });
