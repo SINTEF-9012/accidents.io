@@ -16,9 +16,9 @@ interface Window {
 }
 
 // JQuery plugins
-interface JQuery{
+/*interface JQuery{
   bootstrapSwitch : any;
-}
+}*/
 
 interface angularNotify {
 	(notification: any): void;

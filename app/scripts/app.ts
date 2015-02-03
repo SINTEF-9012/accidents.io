@@ -97,10 +97,20 @@ angular.module('mobileMasterApp', [
 			controller: 'ThingCtrl',
 			templateUrl: 'views/utmost-thing.html',
 		})
+		.state('accident', {
+			url: '/accident/:ID',
+			controller: 'ThingCtrl',
+			templateUrl: 'views/utmost-thing.html',
+		})
+		.state('tweet', {
+			url: '/tweet/:ID',
+			controller: 'ThingCtrl',
+			templateUrl: 'views/utmost-thing.html',
+		})
 		.state('thing', {
 			url: '/thing/:ID?from',
 			controller: 'ThingCtrl',
-			templateUrl: 'views/thing.html'
+			templateUrl: 'views/utmost-thing.html',
 		})
 		.state('thing.edit', {	
 			url: '/edit',
@@ -137,7 +147,7 @@ angular.module('mobileMasterApp', [
 		.state('media', {
 			url: '/media/:ID?from',
 			controller: 'ThingCtrl',
-			templateUrl: 'views/media.html'
+			templateUrl: 'views/utmost-thing.html'
 		})
 		.state('media.edit', {	
 			url: '/edit',

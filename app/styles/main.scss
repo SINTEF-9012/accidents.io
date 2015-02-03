@@ -12,7 +12,8 @@
     height:100%;
 }*/
 body {
-    background:url(/images/background.png) repeat;
+    //background:url(/images/background.png) repeat;
+    background:white;
 }
 #main-map, #thing-map {
     /*position:absolute;
@@ -627,6 +628,13 @@ header + .master-list {
     header + .container-timeline {
         padding-top: 70px;
     }
+    /*header + .container-utmost {
+        padding-top: 110px;
+    }*/
+
+    .infos-fa .btn.btn-flat em:not(.glyphicon) {
+        display:none;
+    }
 }
  
 .master-list {
@@ -1095,8 +1103,74 @@ header .navbar .btn-group.btn-group-fa {
         }
     }
 
+    .share-buttons {
+        margin-right: 8px;
+        margin-left:6px;
+    }
     .share-buttons > a {
         line-height:50px;
         margin:0 1px 0 4px;
+
+    }
+
+    .btn em:not(.glyphicon) {
+        font-size: 21px;
+        font-style: normal;
+        display: inline-block;
+        position: relative;
+        top: -5px;
+    }
+
+    a.btn.vote-selected {
+        background: darken($utmost-color, 10%);
+        border-radius:0;
+    }
+}
+
+.utmost-description {
+font-size: 2em;
+margin-top: -19px;
+padding-top: 19px;
+padding-bottom: 0.6em;
+background: white;
+color: #000000;
+}
+
+.utmost-disqus {
+//background: rgba(234, 221, 211, 0.44);
+padding-top: 6px;
+}
+
+#utmost-picture {
+    margin:0;
+}
+
+.utmost-geo-views {
+    position:relative;
+
+    #interactions-mask {
+        position:absolute;
+        left:0;
+        right:0;
+        bottom:0;
+        top:0;
+        z-index:512;
+        background:transparent;
+
+        &.clicked-anim {
+            transition: background 0.4s ease;
+        }
+        &.clicked {
+            background: rgba(0,0,0,0.8);
+        }
+    }
+
+    #tooltip-interactions {
+        right: 10px;
+        bottom: 10px;
+        opacity: 1;
+        background: $utmost-color;
+        position: absolute;
+        z-index: 513;
     }
 }

@@ -13,7 +13,8 @@ angular.module('mobileMasterApp').service('mapPopupService', function (
 
 	this.generate = (thing: ThingModel.Thing) : HTMLElement => {
 		var content = $('<div />');
-		var toState = itsa.risk(thing) ? 'risk' : (itsa.media(thing) ? 'media' : 'thing');
+		var toState = itsa.risk(thing) ? 'risk' : (itsa.tweet(thing) ?
+			'tweet' : (itsa.incident(thing) ? 'accident' : (itsa.media(thing) ? 'media' : 'thing')));
 
 		content.click(() => {
 			$state.go(toState, {

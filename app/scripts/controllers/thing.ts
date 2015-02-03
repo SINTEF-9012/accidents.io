@@ -3,6 +3,7 @@
 /// <reference path="./../../bower_components/DefinitelyTyped/leaflet/leaflet.d.ts" />
 /// <reference path="./../../bower_components/DefinitelyTyped/lodash/lodash.d.ts" />
 /// <reference path="./../../bower_components/DefinitelyTyped/moment/moment.d.ts" />
+/// <reference path="./../../bower_components/DefinitelyTyped/jquery/jquery.d.ts" />
 /// <reference path="./../../bower_components/DefinitelyTyped/googlemaps/google.maps.d.ts" />
 
 /// <reference path="./../references/generic.d.ts" />
@@ -27,7 +28,8 @@ angular.module('mobileMasterApp').controller('ThingCtrl', (
 	thingModel: ThingModelService,
 	colorFromImage: ColorFromImageService,
 	notify: angularNotify,
-	rrdService: RrdService
+	rrdService: RrdService,
+	voteService: VoteService
 	) => {
 
 	masterMap.disableSituationOverview();
@@ -53,23 +55,54 @@ angular.module('mobileMasterApp').controller('ThingCtrl', (
 		stateBack = 'multimedias';
 	}
 
-	var jwindow = $($window), jMap = $('#thing-map'), jView = $('#thing-view');
+	var jwindow = $($window), jMap : JQuery = $('#thing-map'), jView = $('#thing-view');
 
-	var panorama = new google.maps.StreetViewPanorama(document.getElementById("streetview-thing"), {
-		zoomControl:false 
-	});
+	var jInteractionMask: JQuery = $('#interactions-mask');
+	if ((<any>window).utmostMapInteractions) {
+		jInteractionMask.hide();
+	} else {
+		jInteractionMask.dblclick(() => {
+			jInteractionMask.hide();
+			notify({ message: "Map interactions enabled", classes: "alert-info" });
+			(<any>window).utmostMapInteractions = true;
+		}).click(() => {
+			jInteractionMask.addClass("clicked").removeClass("clicked-anim");
+			window.setTimeout(() => {
+				jInteractionMask.removeClass("clicked").addClass("clicked-anim");
+			}, 10);
+		});
+	};
+
+	var panorama: google.maps.StreetViewPanorama = null;
 	var panoramaService = new google.maps.StreetViewService;
-	var setStreetView = _.throttle((googleLatLng) => {
-		panorama.setPosition(googleLatLng);
-		panoramaService.getPanoramaByLocation(googleLatLng, 42, (panoData) => {
+	var oldStPosition = new google.maps.LatLng(0, 0);
+	var setStreetView = _.throttle((googleLatLng: google.maps.LatLng) => {
+		if (googleLatLng.equals(oldStPosition)) return;
+		oldStPosition = googleLatLng;
+		var photoGraphPosition = google.maps.geometry.spherical.computeOffset(googleLatLng, 10, 0);
+		panoramaService.getPanoramaByLocation(photoGraphPosition, 42, (panoData) => {
 			if (panoData == null) {
+				$scope.hasStreetview = false;
 				return;
 			}
+
+			$scope.hasStreetview = true;
+			$scope.$digest();
+			setLayout();
+			digestScope();
+			if (panorama === null) {
+				panorama = new google.maps.StreetViewPanorama(document.getElementById("streetview-thing"), {
+					zoomControl:false 
+				});
+			}
+			panorama.setPosition(photoGraphPosition);
+
 
 			var panoCenter = panoData.location.latLng;
 			var heading = google.maps.geometry.spherical.computeHeading(panoCenter, googleLatLng);
 			var pov = panorama.getPov();
 			pov.heading = heading;
+			pov.pitch = -10;
 			panorama.setPov(pov);
 			var marker = new google.maps.Marker({
 				map: panorama,
@@ -284,8 +317,8 @@ angular.module('mobileMasterApp').controller('ThingCtrl', (
 					if (url) {
 						url = "http://mm.aftenposten.no/2014/09/04-sykkel/data/images/600_" + url;
 					}
-				} else if (thing.HasProperty("streetview")) {
-					url = thing.String('streetview');
+				//} else if (thing.HasProperty("streetview")) {
+				//	url = thing.String('streetview');
 				}
 			}
 
@@ -409,10 +442,16 @@ angular.module('mobileMasterApp').controller('ThingCtrl', (
 		if (destroyed) {
 			return;
 		}
+		if ($scope.hideMap) {
+			masterMap.hide();
+		} else {
+			masterMap.moveTo(jMap);
+		}
+		setTilesColors(tileColor);
+
 		return;
 		var width = jwindow.width();
 
-		setTilesColors(tileColor);
 
 		var windowHeight = jwindow.height();
 		var height = Math.max(Math.floor(windowHeight - jMap.offset().top), 300);
@@ -443,11 +482,6 @@ angular.module('mobileMasterApp').controller('ThingCtrl', (
 		}
 
 
-		if ($scope.hideMap) {
-			masterMap.hide();
-		} else {
-			masterMap.moveTo(jMap);
-		}
 
 
 	}, 50);
@@ -530,7 +564,6 @@ angular.module('mobileMasterApp').controller('ThingCtrl', (
 
 	function setTilesColors(color) {
 		// TODO
-		return;
 		if (!color || $scope.unfound) return;
 		tileColor = color;
 		var match = color.match(/rgb\((\d+),(\d+),(\d+)\)/),
@@ -545,13 +578,16 @@ angular.module('mobileMasterApp').controller('ThingCtrl', (
 		g = Math.round(g * sat + gray * (1 - sat));
 		b = Math.round(b * sat + gray * (1 - sat));
 		color = "rgb(" + r + "," + g + "," + b + ")";
-		var borderColor = "rgb(" + Math.round(r*0.85) + "," + Math.round(g*0.85) + "," + Math.round(b*0.85) + ")";
+		//var borderColor = "rgb(" + Math.round(r*0.85) + "," + Math.round(g*0.85) + "," + Math.round(b*0.85) + ")";
 
-		$('.patientInfobox, .thingInfobox, .navbar-fixed-top').css({
+		$('#utmost-picture').css({
+			background: color
+		});
+		/*$('.patientInfobox, .thingInfobox, .navbar-fixed-top').css({
 			'backgroundColor': color,
 			'color': colorFromImage.whiteOrBlack(color),
 			'borderColor':  borderColor
-		});
+		});*/
 	}
 
 	// ReSharper disable once ExpressionIsAlwaysConst
@@ -571,4 +607,23 @@ angular.module('mobileMasterApp').controller('ThingCtrl', (
 		}
 	}*/
 
+	voteService.status(id,(vote) => {
+		if (vote === "up") {
+			$scope.upvoted = true;
+		} else if (vote === "down") {
+			$scope.downvoted = true;
+		}
+	});
+
+	$scope.upvote = () => {
+		$scope.upvoted = !$scope.upvoted;
+		$scope.downvoted = false;
+		voteService.vote(id, $scope.upvoted ? "up" : "none");
+	};
+
+	$scope.downvote = () => {
+		$scope.downvoted = !$scope.downvoted;
+		$scope.upvoted = false;
+		voteService.vote(id, $scope.downvoted ? "down" : "none");
+	};
 }); 

@@ -332,7 +332,8 @@
 
 				var content = mapPopupService.generate(thing);
 
-				var toState = itsa.risk(thing) ? 'risk' : (itsa.media(thing) ? 'media' : 'thing');
+				var toState = itsa.risk(thing) ? 'risk' : (itsa.tweet(thing) ?
+					'tweet' : (itsa.incident(thing) ? 'accident' : (itsa.media(thing) ? 'media' : 'thing')));
 
 				var popup = (<any>marker).getPopup();
 				(<any>marker)._masterMapThingId = id;

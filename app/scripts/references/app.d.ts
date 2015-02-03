@@ -210,3 +210,8 @@ interface GeocodingService {
 interface MapPopupService {
 	generate: (thing: ThingModel.Thing) => HTMLElement;
 }
+
+interface VoteService {
+	vote: (id: string, vote: string) => void;
+	status: (id: string, callback: (vote:string) => void) => void;
+}

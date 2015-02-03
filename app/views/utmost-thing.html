@@ -9,8 +9,17 @@
 
 				<div class="pull-right infos-fa">
 					<div class="btn-group btn-group-fa">
+						<a class="btn btn-flat" ng-click="upvote()" ng-class="upvoted?'vote-selected':''" title="Suitable">
+							<i class="fa fa-arrow-circle-o-up"></i>
+							<em>Suitable</em>
+						</a>
+						<a class="btn btn-flat" ng-click="downvote()" ng-class="downvoted?'vote-selected':''" title="Unsuitable">
+							<i class="fa fa-arrow-circle-o-down"></i>
+							<em>Unsuitable</em>
+						</a>
 						<a class="btn btn-flat" ng-click="showShare=true" ng-show="!showShare" title="Share">
 							<i class="fa fa-share-alt-square"></i>
+							<em>Share</em>
 						</a>
 						<div class="share-buttons pull-left" share-square="true" share-links="Facebook, Twitter, LinkedIn, Google-Plus" share-title="Article Title" ng-show="showShare"></div>
 					</div>
@@ -20,19 +29,26 @@
 	</nav>
 </header>
 
-<div class="container-fluid">
-	<h3 class="col-xs-7" title="{{thing.type}}">
-		<span class="text-danger ng-hide" ng-show="unfound">Risk not found</span>
-	</h3>
-	<p ng-if="isPicture" class="media-view">
-		<img ng-src="{{thumbnailUrl}}" alt="" class="img-thumbnail" id="camera-thumbnail" ng-click="$parent.$parent.showPicture()"/>
-	</p>
-{{thing.description}}
-
-<div id="streetview-thing">
-streetview	
+<div class="container-fluid container-utmost">
+<div class="row utmost-description">
+	<div class="col-xs-12">
+		{{thing.description}}
+		<span class="text-danger ng-hide" ng-show="$parent.$parent.thingmodel &amp;&amp; unfound &amp;&amp;!$parent.$parent.thingmodel.loading">Risk not found</span>
+	</div>
 </div>
 
-<!-- <div disqus="thing.ID">canard et lapin</div> -->
+<div class="row utmost-geo-views">
+	<div id="streetview-thing" ng-if="hasStreetview" class="col-md-12 col-lg-6">
+	</div>
 
+	<div ng-class="hasStreetview ? 'col-lg-6' : ''"  class="col-md-12 utmost-map" id="thing-map" ng-hide="hideMap"></div>
+	<div id="interactions-mask"></div>
+</div>
+<div class="row">
+	<div id="utmost-picture" ng-if="isPicture" class="col-md-12 col-lg-6 media-view">
+		<img ng-src="{{thumbnailUrl}}" alt="" class="img-thumbnail" id="camera-thumbnail" ng-click="$parent.$parent.showPicture()"/>
+	</div>
+	<div class="col-md-12 utmost-disqus" disqus="thing.ID"></div>
+</div>
+</div>
 </div>

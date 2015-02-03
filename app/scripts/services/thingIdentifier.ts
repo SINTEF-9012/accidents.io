@@ -14,7 +14,7 @@ angular.module('mobileMasterApp')
 		tweet = /(tweet)/i,
 		resource = /(resource)/i,
 		response = /(response)/i,
-		incident = /(incident)/i,
+		incident = /(accident|incident)/i,
 		risk = /(risk)/i,
 		beacon = /(beacon)/i,
 		order = /(order)/i,
