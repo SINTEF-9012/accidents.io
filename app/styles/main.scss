@@ -286,7 +286,7 @@ height: 672px !important;
 		// border:1px solid #cdcdcd;
 		// border-top:2px solid #eeeeee;
 
-		color:black;
+		color:white;
 		// $infosWidth:40em;
 		// min-width:$infosWidth;
 		// margin-left:-$infosWidth/2;
@@ -305,7 +305,7 @@ height: 672px !important;
             border-color: transparent;
             color: white;
             font-size: 20px;
-            padding: 6px 8px;
+            padding: 6px 6px;
 
             master-icon.default-icon {
                 color: black;
@@ -669,6 +669,7 @@ header + .master-list {
    background-color: $utmost-color; 
    border-color: darken($utmost-color, 6.5%);
    box-shadow: 0px 1px 4px rgba(0,0,0,0.3);
+   color:white;
 }
 
 .master-list-navbar, .messenger-navbar,
@@ -790,9 +791,9 @@ body:not(.touch) .thing.row:hover,  {
 
 
 @media (min-width: $screen-xs-max) {
-    #thing-map, #thing-view {
+    /*#thing-map, #thing-view {
         margin-top:-20px;
-    }
+    }*/
     
     .properties-list {
         overflow-y:auto;
@@ -1180,4 +1181,41 @@ padding-top: 6px;
     margin-right:6px;
     font-style:italic;
     text-align:right;
+}
+
+.utmost-add-btn {
+    img {
+        height:80px;
+        width:80px;
+    }
+    margin-left:15px;
+    //margin-bottom:15px;
+    &.active {
+        background:$gray-light;
+        font-weight: bold;
+    }
+}
+
+.utmost-add-types {
+
+    .btn {
+        text-align:left;
+        min-width:200px;
+    }
+
+    img {
+        margin-left:0px;
+        margin-right:16px;
+    }
+}
+
+.utmost-add-categories {
+    .btn {
+        text-align:center;
+        padding:0;
+    }
+
+    img {
+        margin:8px;
+    }
 }

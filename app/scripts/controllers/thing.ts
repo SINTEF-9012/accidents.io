@@ -536,8 +536,8 @@ angular.module('mobileMasterApp').controller('ThingCtrl', (
 		});
 
 	$scope.$watch("thing.description",() => {
-		$scope.htmlDescription = marked($scope.thing.description)
-			.replace(/<table>/g, '<table class="table table-striped">');
+		$scope.htmlDescription = $scope.thing.description ? marked($scope.thing.description)
+			.replace(/<table>/g, '<table class="table table-striped">') : '';
 	});
 
 	$scope.$on('$destroy', () => {

@@ -20,7 +20,9 @@ angular.module('mobileMasterApp').controller('AddCtrl', (
 	hotkeys: ng.hotkeys.HotkeysProvider,
 	$window: ng.IWindowService,
 	persistentMap: PersistentMap,
-	notify: angularNotify
+	voteService: VoteService,
+	notify: angularNotify,
+	UUID: UUIDService
 	) => {
 
 	if ($rootScope.pastSituation) {
@@ -40,94 +42,94 @@ angular.module('mobileMasterApp').controller('AddCtrl', (
 
 
 	$scope.types = {
-		"incident": {
-			title: "Incidents",
+		"none": {
 			items: {
-				"incident generic": "Generic",
-				"incident automobile": "Car",
-				"incident bomb": "Bomb",
-				"incident chemical": "Chemical",
-				"incident explosion": "Explosion",
-				"incident fire": "Fire",
-				"incident rock slide": "Rock slide"
+				"risk": "Risk",
+				"almost": "Near miss",
+				"green": "Small accident",
+				"orange": "Accident",
+				"red": "Critical accident"
 			}
 		},
-		/*"resource": {
-			title: "Resources",
+		"bike": {
 			items: {
-				"resource fire and rescue vehicle": "Firetruck",
-				"resource health personnel": "Health personnel",
-				"resource health vehicle": "Health vehicle",
-				"resource police personnel": "Policeman",
-				"resource police vehicle": "Police vehicle",
-				"resource fire and rescue personnel": "Fireman",
-				"resource civil defence": "Civil defence",
-				"resource red cross": "Red cross",
-				"resource people aid": "People's aid",
-				"resource hexacopter uav": "Helicopter UAV"
-			}
-		},*/
-		"risk": {
-			title: "Risks",
-			items: {
-				"risk automobile": "Automobile Risk",
-				"risk bomb": "Bomb risk",
-				"risk chemical": "Chemical risk",
-				"risk explosion": "Explosion risk",
-				"risk fire": "Fire risk",
-				"risk generic": "Generic risk",
-				"risk rock slide": "Rock slide risk"
+				"risk": "Bike risk",
+				"almost": "Bike near miss",
+				"green": "Bike small accident",
+				"orange": "Bike accident",
+				"red": "Bike critical accident"
 			}
 		},
-		"response_aligment": {
-			title: "Aligments",
+		"boat": {
 			items: {
-				"response alignment generic": "Generic alignment",
-				"response alignment police car": "Police car alignment",
-				"response alignment firetruck": "Firetruck alignment",
-				"response alignment ambulances": "Ambulances alignment"
+				"risk": "Boat risk",
+				"almost": "Boat near miss",
+				"green": "Boat small accident",
+				"orange": "Boat accident",
+				"red": "Boat critical accident"
 			}
 		},
-		"response_assembly_area": {
-			title: "Assembly areas",
+		"car": {
 			items: {
-				"response assembly area generic": "Assembly area",
-				"response assembly area dead": "Assembly area dead",
-				"response assembly area evacuated": "Assembly area evacuated",
-				"response assembly area injured": "Assembly area injured"
+				"risk": "Car risk",
+				"almost": "Car near miss",
+				"green": "Car small accident",
+				"orange": "Car accident",
+				"red": "Car critical accident"
 			}
 		},
-		"response_points": {
-			title: "Points",
+		"moto": {
 			items: {
-				"response point meeting": "Meeting point",
-				"response point meeting fire": "Meeting point fire personnel",
-				"response point meeting health": "Meeting point health personnel",
-				"response point meeting police": "Meeting point police personnel",
-				"response point control ": "Control point",
-				"response point exit": "Exit point",
-				"response point entry": "Entry point"
+				"risk": "Motorcycle risk",
+				"almost": "Motorcycle near miss",
+				"green": "Motorcycle small accident",
+				"orange": "Motorcycle accident",
+				"red": "Motorcycle critical accident"
 			}
 		},
-		"generic_response": {
-			title: "Responses",
+		"pedestrian": {
 			items: {
-				"response generic": "Generic response",
-				"response command post": "Command post",
-				"response helicopter landing": "Helicopter landing",
-				"response roadblock": "RoadBlock",
-				"response depot": "Depot"
+				"risk": "Risk for pedestrians",
+				"almost": "Pedestrian near miss",
+				"green": "Pedestrian small accident",
+				"orange": "Pedestrian accident",
+				"red": "Pedestrian critical accident"
+			}
+		},
+		"ski": {
+			items: {
+				"risk": "Risk for skiers",
+				"almost": "Ski near miss",
+				"green": "Ski small accident",
+				"orange": "Ski accident",
+				"red": "Ski critical accident"
+			}
+		},
+		"snowmobile": {
+			items: {
+				"risk": "Snowmobile risk",
+				"almost": "Snowmobile near miss",
+				"green": "Snowmobile small accident",
+				"orange": "Snowmobile accident",
+				"red": "Snowmobile critical accident"
 			}
 		}
+		
 	};
 
-	var iconContainer = L.DomUtil.create('div', ''),
+	var iconContainer = L.DomUtil.create('div', 'utmost-icon'),
 		jIconContainer = $(iconContainer);
 
-	var updateIcon = (type) => {
-		var icon = angular.element('<master-icon />');
-		icon.attr('type', type);
-		jIconContainer.empty().append($compile(icon)($scope));
+	var updateIcon = () => {
+		var img = $("<img>");
+		var icon;
+		if ($rootScope.add.category === "none") {
+			icon = $rootScope.add.type + "-small";
+		} else {
+			icon = $rootScope.add.type + "-" + $rootScope.add.category + "-smaa";
+		}
+		img.attr('src', '/images/utmost/' + icon + '.png');
+		jIconContainer.empty().append(img);
 	};
 
 	$scope.activate = (category: string, type: string) => {
@@ -141,39 +143,62 @@ angular.module('mobileMasterApp').controller('AddCtrl', (
 			window.localStorage.setItem('addType', type);
 		}
 
-		updateIcon(type);
+		updateIcon();
 	};
 
 	if (!$rootScope.add) {
 		if (window.localStorage) {
-			$scope.activate(window.localStorage.getItem('addCategory') || 'generic_response',
-				window.localStorage.getItem('addType') || 'generic response');
+			$scope.activate(window.localStorage.getItem('addCategory') || 'none',
+				window.localStorage.getItem('addType') || 'risk');
 		} else {
-			$scope.activate('generic_response', 'generic response');
+			$scope.activate('none', 'risk');
 		}
 	} else {
-		updateIcon($rootScope.add.type);
+		updateIcon();
 	}
 
 	//marker.addTo(masterMap);
 
 	$scope.save = (goToMainAfter: boolean) => {
 
-		var type = "master:" + $rootScope.add.category; 
-		AddService.register(type, masterMap.getCenter(), (thing: ThingModel.ThingPropertyBuilder) => {
+		if (!$scope.description) {
+			notify({message: "Please fill a description", classes: "alert-danger"});
+			return;
+		}
+		var icon;
+		if ($rootScope.add.category === "none") {
+			icon = $rootScope.add.type;
+		} else {
+			icon = $rootScope.add.type + "-" + $rootScope.add.category;
+		}
+		var id = UUID.generate();
+		var type = "master:utmost:" + $rootScope.add.type;
+		var center = masterMap.getCenter();
+		AddService.register(type, center, (thing: ThingModel.ThingPropertyBuilder) => {
 			if ($scope.description) {
 				thing.String('description', $scope.description);
 			}
-			thing.String('name', $scope.types[$rootScope.add.category].items[$rootScope.add.type]);
-			thing.String('_type', $rootScope.add.type);
-		});
+			//thing.String('name', $scope.types[$rootScope.add.category].items[$rootScope.add.type]);
+			thing.String('_utmostIcon', icon);
+		}, id);
 
 		var message = $scope.types[$rootScope.add.category].items[$rootScope.add.type] + " saved";
 		notify({message: message, classes: "alert-info"});
 		
 		if (goToMainAfter) {
-			$state.go(($rootScope.previousState && $rootScope.previousState.indexOf('add') !== 0) ?
-				$rootScope.previousState : 'map.slidder');
+			voteService.vote(id, "up");
+			if ($rootScope.previousState && $rootScope.previousState.indexOf('add') !== 0) {
+				if ($rootScope.previousState === 'streetview') {
+					$state.go('streetview', {
+						lat: center.lat,
+						lng: center.lng
+					});
+				} else {
+					$state.go($rootScope.previousState);
+				}
+			} else {
+				$state.go('map.slidder');
+			}
 		}
 	};
 

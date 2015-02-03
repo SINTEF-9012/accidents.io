@@ -172,7 +172,16 @@ html:not(.disable-markers-animations).popup-transition .leaflet-popup{
             margin-left: -19px;
             margin-top: -19px;
         }
-        
+     
+        .utmost-icon img {
+            width:40px;
+            height:40px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-left: -20px;
+            margin-top: -20px;
+        }   
 
         //&.reticle {
             $reticle: url(../images/reticle.png) no-repeat center;
@@ -281,6 +290,8 @@ html:not(.disable-markers-animations).popup-transition .leaflet-popup{
         white-space: nowrap;
         color: white;
         padding-top:3px;
+
+
         &.utmost-add-button {
             padding: 3px 0 0 4px;
         }
@@ -311,6 +322,22 @@ html:not(.disable-markers-animations).popup-transition .leaflet-popup{
 
         &:hover {
         background: radial-gradient(ellipse at bottom left, #ffa37f 98%,#ff4b00 99%,#ff4b00 100%);
+        }
+    }
+
+    @media (max-width: $screen-xs-max) {
+
+        bottom:30px;
+        right:30px;
+        
+        & > div {
+            height:50px;
+            width:50px;
+            line-height:50px;
+            font-size:22px;
+            &.utmost-add-button {
+                padding: 2px 0 0 3px
+            }
         }
     }
 }

@@ -1,15 +1,22 @@
 <header>
-	<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+	<nav class="navbar navbar-default navbar-fixed-top navbar-utmost" role="navigation">
 	  <div class="container-fluid">
 	  	<div class="row">
 	  		
 		    <a class="navbar-brand col-xs-2" ui-sref="{{previousState || 'map.slidder'}}"><span class="glyphicon glyphicon-remove"></span></a>
 
-		    <h3 class="col-xs-8">
+		    <h3 class="col-xs-7 col-md-8" title="{{types[add.category].items[add.type] | lowercase}}">
 		    	Add {{types[add.category].items[add.type] | lowercase}}
 	    	</h3>
 
-	    	<button type="submit" class="btn btn-primary navbar-btn pull-right" ng-click="save(true)">Save</button>
+			<div class="pull-right infos-fa">
+				<div class="btn-group btn-group-fa">
+					<a class="btn btn-flat" ng-click="save(true)" title="Send">
+						<i class="fa fa-paper-plane"></i>
+						<em>Send</em>
+					</a>
+				</div>
+			</div>
 	    </div>
 	  </div>
 	</nav>
@@ -17,38 +24,84 @@
 
 <div class="container-fluid">
 	<div class="row" >
-		<div class="col-sm-5 col-lg-3 properties-list add-view" id="thing-view">
-			<div class="row">
-				<ul class="nav nav-tabs" role="tablist">
-					<li ng-class="currentState === 'add.informations' ? '' : 'active'"><a role="tab" ui-sref="add">Element's type</a></li>
-					<li ng-class="currentState === 'add.informations' ? 'active' : ''"><a role="tab" ui-sref="add.informations">Description</a></li>
-				</ul>
-				<div class="tab-content" ui-view>
-					<div class="panel-group col-md-12" id="accordion">
-						<div class="panel panel-default" ng-repeat="(key,category) in types">
-							<div class="panel-heading" data-toggle="collapse" data-target="#{{key}}" data-parent="#accordion">
-								<h4 class="panel-title">
-									{{category.title}}
-								</h4>
-							</div>
-							<div id="{{key}}" class="panel-collapse collapse" ng-class="{in:key==add.category}">
-								<div class="panel-body">
-									<div class="btn-group-vertical btn-block" data-toggle="buttons">
-										<label class="btn btn btn-default" ng-repeat="(icon,name) in category.items" ng-click="activate(key, icon)" ng-class="{active:icon==add.type}">
-											<input type="radio" name="options" id="{{icon}}">
-											<div class="pull-left">
-												<master-icon type="{{key}} {{icon}}"></master-icon>
-											</div>&nbsp;
-											{{name}}
-										</label>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
+		<h3 class="col-xs-12">Type</h3>
+	</div>
+	<div class="row utmost-add-types">
+		<div class="utmost-add-btn btn "
+			ng-class="{active:'risk'==add.type}" ng-click="activate(add.category, 'risk')">
+			<img src="/images/utmost/risk-small.png" alt=""/>
+			Risk
 		</div>
-		<div class="col-sm-7 col-lg-9" id="thing-map"></div>
+		<div class="utmost-add-btn btn "
+			ng-class="{active:'almost'==add.type}" ng-click="activate(add.category, 'almost')">
+			<img src="/images/utmost/almost-small.png" alt=""/>
+			Near miss
+		</div>
+		<div class="utmost-add-btn btn "
+			ng-class="{active:'green'==add.type}" ng-click="activate(add.category, 'green')">
+			<img src="/images/utmost/green-small.png" alt="" />
+			Small accident
+		</div>
+		<div class="utmost-add-btn btn "
+			ng-class="{active:'orange'==add.type}" ng-click="activate(add.category, 'orange')">
+			<img src="/images/utmost/orange-small.png" alt="" />
+			Accident
+		</div>
+		<div class="utmost-add-btn btn "
+			ng-class="{active:'red'==add.type}" ng-click="activate(add.category, 'red')">
+			<img src="/images/utmost/red-small.png" alt="" />
+			Critical accident
+		</div>
+	</div>
+
+	<div class="row" >
+		<h3 class="col-xs-12">Category</h3>
+	</div>
+	<div class="row utmost-add-categories">
+		<div class="utmost-add-btn btn " ng-class="{active:'none'==add.category}"
+			ng-click="activate('none', add.type)">
+			<img ng-src="/images/utmost/{{add.type}}-small.png" alt="" />
+		</div>
+		<div class="utmost-add-btn btn " ng-class="{active:'bike'==add.category}"
+			ng-click="activate('bike', add.type)">
+			<img ng-src="/images/utmost/{{add.type}}-bike-smaa.png" alt="" />
+		</div>
+		<div class="utmost-add-btn btn " ng-class="{active:'boat'==add.category}"
+			ng-click="activate('boat', add.type)">
+			<img ng-src="/images/utmost/{{add.type}}-boat-smaa.png" alt="" />
+		</div>
+		<div class="utmost-add-btn btn " ng-class="{active:'car'==add.category}"
+			ng-click="activate('car', add.type)">
+			<img ng-src="/images/utmost/{{add.type}}-car-smaa.png" alt="" />
+		</div>
+		<div class="utmost-add-btn btn " ng-class="{active:'moto'==add.category}"
+			ng-click="activate('moto', add.type)">
+			<img ng-src="/images/utmost/{{add.type}}-moto-smaa.png" alt="" />
+		</div>
+		<div class="utmost-add-btn btn " ng-class="{active:'pedestrian'==add.category}"
+			ng-click="activate('pedestrian', add.type)">
+			<img ng-src="/images/utmost/{{add.type}}-pedestrian-smaa.png" alt="" />
+		</div>
+		<div class="utmost-add-btn btn " ng-class="{active:'ski'==add.category}"
+			ng-click="activate('ski', add.type)">
+			<img ng-src="/images/utmost/{{add.type}}-ski-smaa.png" alt="" />
+		</div>
+		<div class="utmost-add-btn btn " ng-class="{active:'snowmobile'==add.category}"
+			ng-click="activate('snowmobile', add.type)">
+			<img ng-src="/images/utmost/{{add.type}}-snowmobile-smaa.png" alt="" />
+		</div>
+	</div>
+	<div class="row" >
+		<h3 class="col-xs-12">Description</h3>
+	</div>
+	<div class="row">
+		<div class="col-xs-11 col-sm-10 col-md-8 col-lg-5">
+		<textarea class="form-control" id="addDescription" rows="5" ng-model="description" placeholder="Describe everything you want"></textarea></div>
+	</div>
+	<div class="row">
+		<h3 class="col-xs-12">Position</h3>
+	</div>
+	<div class="row">
+		<div><div id="thing-map"></div></div>
 	</div>
 </div>
