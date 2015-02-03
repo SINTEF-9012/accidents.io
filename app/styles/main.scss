@@ -1143,7 +1143,7 @@ padding-top: 6px;
 }
 
 #utmost-picture {
-    margin:0;
+    margin:20px 0 20px 0;
 }
 
 .utmost-geo-views {
@@ -1219,3 +1219,8 @@ padding-top: 6px;
         margin:8px;
     }
 }
+
+/*.tweet-controller, .risk-controller, .accident-controller, .thing-controller {
+    background: $gray-darker;
+    color:white;
+}*/

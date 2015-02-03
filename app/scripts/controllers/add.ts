@@ -178,6 +178,7 @@ angular.module('mobileMasterApp').controller('AddCtrl', (
 			if ($scope.description) {
 				thing.String('description', $scope.description);
 			}
+			thing.DateTime("publication", new Date());
 			//thing.String('name', $scope.types[$rootScope.add.category].items[$rootScope.add.type]);
 			thing.String('_utmostIcon', icon);
 		}, id);

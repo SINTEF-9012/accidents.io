@@ -372,9 +372,9 @@ angular.module('mobileMasterApp').controller('ThingCtrl', (
 
 				}
 
-				window.setImmediate(() => {
+				/*window.setImmediate(() => {
 					colorFromImage.applyColor(smallThumbnailUrl, setTilesColors);
-				});
+				});*/
 			}
 
 			$scope.knowledge = thing.Type ? Knowledge.getPropertiesOrder(thing) : [];
@@ -446,7 +446,7 @@ angular.module('mobileMasterApp').controller('ThingCtrl', (
 		} else {
 			masterMap.moveTo(jMap);
 		}
-		setTilesColors(tileColor);
+		//setTilesColors(tileColor);
 
 		return;
 		var width = jwindow.width();
@@ -532,7 +532,7 @@ angular.module('mobileMasterApp').controller('ThingCtrl', (
 			$scope.$digest();
 		}
 
-		window.setImmediate(() => setTilesColors(tileColor));
+		//window.setImmediate(() => setTilesColors(tileColor));
 		});
 
 	$scope.$watch("thing.description",() => {
@@ -565,51 +565,6 @@ angular.module('mobileMasterApp').controller('ThingCtrl', (
 
 	masterMap.setVerticalTopMargin(0);
 	setLayout();
-
-	function setTilesColors(color) {
-		// TODO
-		if (!color || $scope.unfound) return;
-		tileColor = color;
-		var match = color.match(/rgb\((\d+),(\d+),(\d+)\)/),
-			r = parseInt(match[1]),
-			g = parseInt(match[2]),
-			b = parseInt(match[3]);
-
-		var sat = isPatient ? 0.32 : 0.66;
-		var gray = r * 0.3086 + g * 0.6094 + b * 0.0820;
-
-		r = Math.round(r * sat + gray * (1 - sat));
-		g = Math.round(g * sat + gray * (1 - sat));
-		b = Math.round(b * sat + gray * (1 - sat));
-		color = "rgb(" + r + "," + g + "," + b + ")";
-		//var borderColor = "rgb(" + Math.round(r*0.85) + "," + Math.round(g*0.85) + "," + Math.round(b*0.85) + ")";
-
-		$('#utmost-picture').css({
-			background: color
-		});
-		/*$('.patientInfobox, .thingInfobox, .navbar-fixed-top').css({
-			'backgroundColor': color,
-			'color': colorFromImage.whiteOrBlack(color),
-			'borderColor':  borderColor
-		});*/
-	}
-
-	// ReSharper disable once ExpressionIsAlwaysConst
-	/*if (!isMedia) {
-		var imgIdenticon = $('img.identicon');
-
-		if (colorFromImage.hasCache(imgIdenticon.get(0))) {
-							console.log(prop.Key[0]);
-			colorFromImage.applyColor(imgIdenticon.get(0), setTilesColors, true);
-		} else {
-			(<any>imgIdenticon).imagesLoaded(() => {
-				// Double verification because it's asynchronous
-				if (!isMedia) {
-					colorFromImage.applyColor(imgIdenticon.get(0), setTilesColors, true);
-				}
-			});
-		}
-	}*/
 
 	voteService.status(id,(vote) => {
 		if (vote === "up") {
