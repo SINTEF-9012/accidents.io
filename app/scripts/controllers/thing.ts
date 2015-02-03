@@ -533,6 +533,11 @@ angular.module('mobileMasterApp').controller('ThingCtrl', (
 		}
 
 		window.setImmediate(() => setTilesColors(tileColor));
+		});
+
+	$scope.$watch("thing.description",() => {
+		$scope.htmlDescription = marked($scope.thing.description)
+			.replace(/<table>/g, '<table class="table table-striped">');
 	});
 
 	$scope.$on('$destroy', () => {

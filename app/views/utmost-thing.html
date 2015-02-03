@@ -32,7 +32,7 @@
 <div class="container-fluid container-utmost">
 <div class="row utmost-description">
 	<div class="col-xs-12">
-		{{thing.description}}
+		<div ng-bind-html="htmlDescription"></div>
 		<span class="text-danger ng-hide" ng-show="$parent.$parent.thingmodel &amp;&amp; unfound &amp;&amp;!$parent.$parent.thingmodel.loading">Risk not found</span>
 	</div>
 </div>
@@ -44,11 +44,26 @@
 	<div ng-class="hasStreetview ? 'col-lg-6' : ''"  class="col-md-12 utmost-map" id="thing-map" ng-hide="hideMap"></div>
 	<div id="interactions-mask"></div>
 </div>
+<div class="aftenposten-report row" ng-if="thing.type &amp;&amp; thing.type.indexOf('aftenposten') !== -1">
+	Data collected by <a href="http://www.aftenposten.no/" target="_blank"><img src="/images/Aftenposten_logo.svg" height="24"/></a>
+</div>
 <div class="row">
 	<div id="utmost-picture" ng-if="isPicture" class="col-md-12 col-lg-6 media-view">
-		<img ng-src="{{thumbnailUrl}}" alt="" class="img-thumbnail" id="camera-thumbnail" ng-click="$parent.$parent.showPicture()"/>
+		<img ng-src="{{thumbnailUrl}}" alt="" class="img-thumbnail" id="camera-thumbnail" ng-click="showPicture()"/>
 	</div>
-	<div class="col-md-12 utmost-disqus" disqus="thing.ID"></div>
+	<div id="utmost-picture" ng-if="isVideo" class="col-md-12 col-lg-6 media-view">
+		<video id="video{{thing.id}}" controls ng-attr-poster="{{posterUrl}}" loop autoplay fullscreen="videoFullscreen" ngi-click="videoFullscreen = !videoFullscreen">
+			<source ng-src="{{mp4Url}}" type="video/mp4">
+			<source ng-src="{{webmUrl}}" type="video/webm">
+		</video>
+	</div>
+	<div ng-class="isPicture ? 'col-lg-6' : ''"class="col-md-12 utmost-disqus" disqus="thing.ID"></div>
 </div>
 </div>
+</div>
+
+<div ng-if="fullscreenPicture" id="picture-view" ng-click="$parent.fullscreenPicture = false" fullscreen="$parent.fullscreenPicture">
+	<div>
+		<img ng-src="{{fullUrl}}" alt="" />
+	</div>
 </div>

@@ -8,6 +8,7 @@
 angular.module('mobileMasterApp').service('streetViewService', function (
 	notify: angularNotify,
 	mapPopupService: MapPopupService,
+	itsa: ThingIdentifierService,
 	thingModel: ThingModelService) {
 
 	var streetViewMarkers: { [id: string]: google.maps.Marker } = {};
@@ -35,17 +36,38 @@ angular.module('mobileMasterApp').service('streetViewService', function (
 		}
 	};
 
-	var icon = new google.maps.MarkerImage('/images/gmap-risk-icon.png', new google.maps.Size(64, 64))
-	icon.scaledSize = new google.maps.Size(64, 64);
+	var riskSize = new google.maps.Size(96, 84);
+	var normalSize = new google.maps.Size(96, 96);
+
+	var iconMap: { [name: string]: google.maps.MarkerImage } = {};
 
 	var parseThing = (thing: ThingModel.Thing) => {
 		var location = thing.LocationLatLng();
 
 		if (location && !isNaN(location.Latitude) && !isNaN(location.Longitude)) {
+			var i = "default";
+			if (itsa.risk(thing)) {
+				i = "risk";
+			} else if (itsa.incident(thing)) {
+				i = "orange";
+			} else if (itsa.tweet(thing)) {
+				i = "tweet";
+			}
+
+			if (thing.HasProperty("_utmostIcon")) {
+				i = thing.String("_utmostIcon");
+			}
+
+			var thingIcon = iconMap[i];
+			if (!thingIcon) {
+				var size = i.indexOf("risk") === 0 ? riskSize : normalSize;
+				thingIcon = iconMap[i] = new google.maps.MarkerImage('/images/utmost/' + i + '.png', size);
+				thingIcon.scaledSize = size;
+			}
+
 			var marker = new google.maps.Marker({
 				position: new google.maps.LatLng(location.Latitude, location.Longitude),
-				//draggable: true,
-				icon: icon
+				icon: thingIcon
 			});
 			google.maps.event.addListener(marker, 'click',() => {
 				var content = mapPopupService.generate(thing);

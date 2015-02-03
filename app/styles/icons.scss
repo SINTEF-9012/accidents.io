@@ -733,3 +733,15 @@ master-icon.hospitalType {
 .thing.row master-icon {
 	font-size: 1.1em;
 }
+
+master-icon.utmost-icon {
+	img {
+		width:40px;
+		height:40px;
+	}
+
+	&.utmost-risk-icon img {
+		height:35px;
+		margin-top:2px;
+	}
+}

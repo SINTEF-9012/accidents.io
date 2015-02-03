@@ -81,8 +81,10 @@ angular.module('mobileMasterApp')
 
 	var addMarker: google.maps.Marker = null;
 
-	var icon = new google.maps.MarkerImage('/images/gmap-risk-icon.png', new google.maps.Size(64, 64))
-	icon.scaledSize = new google.maps.Size(64, 64);
+	//var size = new google.maps.Size(124, 180);
+	var size = new google.maps.Size(80, 116);
+	var icon = new google.maps.MarkerImage('/images/utmost/move.png', size);
+	icon.scaledSize = size;
 
 	$scope.add = () => {
 		$scope.addMode = true;

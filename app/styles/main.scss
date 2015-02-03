@@ -1131,7 +1131,7 @@ header .navbar .btn-group.btn-group-fa {
 font-size: 2em;
 margin-top: -19px;
 padding-top: 19px;
-padding-bottom: 0.6em;
+padding-bottom: 0.42em;
 background: white;
 color: #000000;
 }
@@ -1173,4 +1173,11 @@ padding-top: 6px;
         position: absolute;
         z-index: 513;
     }
+}
+
+.aftenposten-report {
+    margin-top:6px;
+    margin-right:6px;
+    font-style:italic;
+    text-align:right;
 }

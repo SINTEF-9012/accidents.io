@@ -107,7 +107,15 @@ angular.module('mobileMasterApp')
 	var mediaServerUrl = settingsService.getMediaServerUrl();
 
 	function setIcon(element: JQuery, type: string, thing: ThingModel.Thing, attrs) {
-		if (/patient/i.test(type) && !/patients/i.test(type)) {
+		if (thing && thing.HasProperty("_utmostIcon")) {
+			var img = $('<img>');
+			img.attr('src', '/images/utmost/' + thing.String('_utmostIcon') + '-smaa.png');
+			element.addClass("utmost-icon");
+			if (thing.String("_utmostIcon").indexOf("risk") === 0) {
+				element.addClass("utmost-risk-icon");
+			}
+			element.append(img);
+		} else if (/patient/i.test(type) && !/patients/i.test(type)) {
 			// triage_status
 			var color = (thing && thing.HasProperty('triage_status') && thing.String('triage_status') !== 'no status entered') ? thing.String('triage_status') : 'white';
 			var triagelight = patientTriageIcon(color);
