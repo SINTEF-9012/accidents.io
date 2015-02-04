@@ -25,8 +25,6 @@ interface angularNotify {
 }
 
 // Generic libraries (if somebody want to write definitions…)
-declare var OSMBuildings;
-declare var rebound;
 
 declare module L {
 	export var Renderer: any;
@@ -47,10 +45,7 @@ declare var throttle: (fn: () => void, wait: number, options?: any) => () => voi
 
 declare var PruneClusterLeafletSpiderfier: any;
 
-declare var RGBaster: any;
 
 declare var MapPaint: any;
 
-declare var Chart: any;
 
-declare var Dygraph: any;

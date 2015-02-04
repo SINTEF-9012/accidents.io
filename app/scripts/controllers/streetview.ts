@@ -12,16 +12,12 @@ angular.module('mobileMasterApp')
 	.controller('StreetViewCtrl', (
 		$scope,
 		$state: ng.ui.IStateService,
-		//$http: ng.IHttpService,
 		thingModel: ThingModelService,
 		geocodingService: GeocodingService,
 		$stateParams,
 		mapPopupService: MapPopupService,
 		notify: angularNotify,
-		streetViewService: StreetViewService
-		/*$rootScope: MasterScope.Root,
-		$state: ng.ui.IStateService,
-		settingsService: SettingsService*/) => {
+		streetViewService: StreetViewService) => {
 
 	// The location can be specified as state parameters
 	var position;

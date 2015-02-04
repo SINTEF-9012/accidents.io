@@ -26,9 +26,7 @@ angular.module('mobileMasterApp').controller('ThingCtrl', (
 	$window: ng.IWindowService,
 	Knowledge : KnowledgeService,
 	thingModel: ThingModelService,
-	colorFromImage: ColorFromImageService,
 	notify: angularNotify,
-	rrdService: RrdService,
 	voteService: VoteService,
 	streetViewService: StreetViewService
 	) => {
@@ -41,8 +39,7 @@ angular.module('mobileMasterApp').controller('ThingCtrl', (
 	var multimediaServer = settingsService.getMediaServerUrl();
 
 	var id = $stateParams.ID;
-	var isPatient = $state.is('patient'),
-		stateBack = 'map.slidder',
+	var stateBack = 'map.slidder',
 		stateInfos = { thingtype: 'all' },
 		isMedia = false;
 
@@ -56,7 +53,7 @@ angular.module('mobileMasterApp').controller('ThingCtrl', (
 		stateBack = 'multimedias';
 	}
 
-	var jwindow = $($window), jMap : JQuery = $('#thing-map'), jView = $('#thing-view');
+	var jwindow = $($window), jMap: JQuery = $('#thing-map');
 
 	var jInteractionMask: JQuery = $('#interactions-mask');
 	if ((<any>window).utmostMapInteractions) {
@@ -154,44 +151,6 @@ angular.module('mobileMasterApp').controller('ThingCtrl', (
 	};
 	masterMap.on('dragstart', onDrag);
 
-	var graphOptionsTemperature = {
-		labels: ["", "Temperature"],
-		colors: ["white"],
-		highlightCircleSize: 5,
-		animatedZooms: true,
-		//showRangeSelector: true,
-		//showRoller: true,
-		fillGraph: true,
-		customBars: false,
-		fillAlpha: 0.15,
-		gridLineColor: "rgba(220,220,220,0.3)",
-		strokeWidth: 3.0,
-		axisLineColor: "rgba(220,220,220,0.3)",
-		axisLabelColor: "white",
-		//rollPeriod: 2,
-		//plotter: smoothPlotter,
-		labelsDivWidth: 260,
-		labelsDivStyles: {
-			background: "transparent",
-			fontSize: "12px",
-			fontFamily: "monospace",
-			textAlign: "right"
-		},
-		axes: {
-			y: {
-				axisLabelWidth: 30
-			}
-		}
-	};
-	var graphOptionsActivity = _.cloneDeep(graphOptionsTemperature);
-	graphOptionsActivity.labels[1] = "Activity";
-	graphOptionsActivity.customBars = true;
-	graphOptionsActivity.fillGraph = false;
-	graphOptionsActivity.fillAlpha = 0.42;
-
-	var graphTemperature = null, graphActivity = null;
-	var divGraphTemperature = null, divGraphActivity = null;
-
 	var digestScope = throttle(() => {
 		var thing = thingModel.warehouse.GetThing(id);
 
@@ -233,16 +192,6 @@ angular.module('mobileMasterApp').controller('ThingCtrl', (
 					zoom = Math.max(masterMap.getZoom(), zoom);
 				}
 
-
-				/*var centerPoint = masterMap.project(pos, zoom),
-					size = masterMap.getSize().divideBy(2),
-					viewBounds = new L.Bounds(centerPoint.subtract(size), centerPoint.add(size)),
-					viewLatLngBounds = new L.LatLngBounds(
-						masterMap.unproject(viewBounds.min, zoom),
-						masterMap.unproject(viewBounds.max, zoom));
-
-				masterMap.setMaxBounds(viewLatLngBounds);*/
-
 				var mapBounds = masterMap.getBounds();
 
 				var changeView = false, initSetView = false;
@@ -264,9 +213,8 @@ angular.module('mobileMasterApp').controller('ThingCtrl', (
 				}
 
 				if (changeView) {
-					//if (trueinitSetView/* || !$('html').hasClass('disable-markers-animations')*/) {
 
-						var options = oldPosition === null ? { animate: false } : undefined;
+					var options = oldPosition === null ? { animate: false } : undefined;
 
 					masterMap.setView(pos, zoom, options);
 
@@ -316,8 +264,6 @@ angular.module('mobileMasterApp').controller('ThingCtrl', (
 					if (url) {
 						url = "http://mm.aftenposten.no/2014/09/04-sykkel/data/images/600_" + url;
 					}
-				//} else if (thing.HasProperty("streetview")) {
-				//	url = thing.String('streetview');
 				}
 			}
 
@@ -372,9 +318,6 @@ angular.module('mobileMasterApp').controller('ThingCtrl', (
 
 				}
 
-				/*window.setImmediate(() => {
-					colorFromImage.applyColor(smallThumbnailUrl, setTilesColors);
-				});*/
 			}
 
 			$scope.knowledge = thing.Type ? Knowledge.getPropertiesOrder(thing) : [];
@@ -383,45 +326,6 @@ angular.module('mobileMasterApp').controller('ThingCtrl', (
 			// The name information is already in the page title
 			$scope.rawKnowledge = $scope.knowledge;
 			$scope.knowledge = _.filter($scope.knowledge, (k: any) => k.score >= 0 /*&& k.key !== 'name'*/);
-
-			if (isPatient) {
-				$scope.oldReport = $scope.thing && $scope.thing.braceletOn && $scope.thing.reportDate && (moment().subtract("minutes", 3).isAfter($scope.thing.reportDate));
-
-				rrdService.load(id, "temperature", (data) => {
-					if (data.length) {
-						if (graphTemperature === null) {
-							divGraphTemperature = document.createElement("div");
-
-							var canvasArea = document.getElementById("canvas-temperature-area");
-							if (canvasArea) {
-								canvasArea.appendChild(divGraphTemperature);
-							}
-
-							graphTemperature = new Dygraph(divGraphTemperature, data, graphOptionsTemperature);
-						} else {
-							graphTemperature.updateOptions({ 'file': data });
-						}
-					}
-				});
-
-				rrdService.load(id, "activity", (data) => {
-					if (data.length) {
-						if (graphActivity === null) {
-							divGraphActivity = document.createElement("div");
-
-							var canvasArea = document.getElementById("canvas-activity-area");
-							if (canvasArea) {
-								canvasArea.appendChild(divGraphActivity);
-							}
-
-							graphActivity = new Dygraph(divGraphActivity, data, graphOptionsActivity);
-						} else {
-							graphActivity.updateOptions({ 'file': data });
-						}
-					}
-				}, { min: "_activityMin", max: "_activityMax" });
-			}
-
 
 			if (!$scope.$$phase) {
 				$scope.$digest();
@@ -434,9 +338,6 @@ angular.module('mobileMasterApp').controller('ThingCtrl', (
 
 	var destroyed = false;
 
-	var tileColor = null;
-
-
 	var setLayout = throttle(() => {
 		if (destroyed) {
 			return;
@@ -446,47 +347,9 @@ angular.module('mobileMasterApp').controller('ThingCtrl', (
 		} else {
 			masterMap.moveTo(jMap);
 		}
-		//setTilesColors(tileColor);
-
-		return;
-		var width = jwindow.width();
-
-
-		var windowHeight = jwindow.height();
-		var height = Math.max(Math.floor(windowHeight - jMap.offset().top), 300);
-		jMap.height(height - 1 /* border */);
-		if (width >= 768 && !$scope.hideMap) {
-			jView.height(height - 11 /* margin bottom */);
-		} else {
-			jMap.height(Math.min(height - 1, Math.floor(windowHeight/2)) /* border */);
-			jView.height('auto');
-		}
-
-		if (isPatient) {
-			if (graphTemperature) {
-				var canvasArea = document.getElementById("canvas-temperature-area");
-				if (canvasArea) {
-					canvasArea.appendChild(divGraphTemperature);
-					graphTemperature.resize();
-				}
-			}
-
-			if (graphActivity) {
-				var canvasAreaAct = document.getElementById("canvas-activity-area");
-				if (canvasAreaAct) {
-					canvasAreaAct.appendChild(divGraphActivity);
-					graphActivity.resize();
-				}
-			}
-		}
-
-
-
-
 	}, 50);
 
 	setLayout();
-	// ??? masterMap.moveTo(jMap);
 
 	digestScope();
 
@@ -532,8 +395,7 @@ angular.module('mobileMasterApp').controller('ThingCtrl', (
 			$scope.$digest();
 		}
 
-		//window.setImmediate(() => setTilesColors(tileColor));
-		});
+	});
 
 	$scope.$watch("thing.description",() => {
 		$scope.htmlDescription = $scope.thing.description ? marked($scope.thing.description)
@@ -552,13 +414,6 @@ angular.module('mobileMasterApp').controller('ThingCtrl', (
 		}
 
 		masterMap.off('drag', onDrag);
-
-		if (graphTemperature !== null) {
-			graphTemperature.destroy();
-		}
-		if (graphActivity != null) {
-			graphActivity.destroy();
-		}
 	});
 
 	jwindow.resize(setLayout);

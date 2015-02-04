@@ -91,12 +91,45 @@
 			<img ng-src="/images/utmost/{{add.type}}-snowmobile-smaa.png" alt="" />
 		</div>
 	</div>
-	<div class="row" >
-		<h3 class="col-xs-12">Description</h3>
+	<div class="row">
+		<div class="col-xs-12 col-md-6">
+			<div class="row">
+				<h3 class="col-xs-12">Description <small>(required)</small></h3>
+				<div class="col-xs-12 col-lg-10">
+					<textarea class="form-control" id="addDescription" rows="5" ng-model="description" placeholder="Describe everything you want"></textarea>
+				</div>
+			</div>
+		</div>
+		<div class="col-xs-12 col-md-6">
+			<div class="row">
+				<h3 class="col-xs-12">Media <small ng-show="!utmostFile">(optional)</small></h3>
+				<div class="col-xs-12" ng-show="!utmostFile">
+					<div class="camera-trigger btn btn-default btn-lg">
+						<span class="glyphicon glyphicon-camera"></span>
+						<input type="file" accept="image/*,video/*,audio/*" ng-file-select ng-model="utmostFile"
+						 capture resetOnClick="true"/>
+					</div>
+				</div>
+				<p ng-if="isPicture" class="col-xs-12">
+					<img ng-src="{{thumbnailUrl}}" alt="" class="img-thumbnail" id="camera-thumbnail"/>
+				</p>
+				<p ng-if="isVideo" class="col-xs-12">
+					<video controls="controls" loop="loop" preload="auto" poster="{{posterUrl}}" autoplay>
+						<source ng-src="{{mp4Url}}" type="video/mp4">
+						<source ng-src="{{webmUrl}}" type="video/webm">
+						<a target="_blank" href="{{url}}" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-play"></span> Play</a>
+					</video>
+				</p>
+				<p ng-show="utmostFile&amp;&amp;!isVideo&amp;&amp;!isPicture" class="col-xs-12">
+					<a target="_blank" href="{{url}}" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-file"></span> Open the document</a>
+				</p>
+				<p ng-show="utmostFile" class="col-xs-12">
+					<a ng-click="removeMedia();" href="#" class="btn btn-danger btn-xs">Remove</a>
+				</p>
+			</div>
+		</div>
 	</div>
 	<div class="row">
-		<div class="col-xs-11 col-sm-10 col-md-8 col-lg-5">
-		<textarea class="form-control" id="addDescription" rows="5" ng-model="description" placeholder="Describe everything you want"></textarea></div>
 	</div>
 	<div class="row">
 		<h3 class="col-xs-12">Position</h3>

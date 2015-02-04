@@ -34,18 +34,11 @@
 
 #streetview-thing {
     height: 400px;
-//    margin-top:-19px;
-//    margin-left: -15px;
-//    margin-right: -15px; 
 }
 #thing-map.utmost-map {
     margin-top:0;
     height: 400px;
 }
-/*#map-root {
-    top:50px;
-}*/
-
 .leaflet-popup-content-wrapper {
     border-radius:0;
     position:relative;
@@ -315,8 +308,6 @@ html:not(.disable-markers-animations).popup-transition .leaflet-popup{
         cursor:pointer;
         transition: background-image 0.33s ease;
         background: rgb(255,75,0);
-        /*background: linear-gradient(200deg, #ff4b00 0%,#ff4b00 99%,#ffa37f 100%);*/
-        //.utmost-add-button {
         transition: background-image 0.33s ease;
         background: radial-gradient(ellipse at bottom left, #ffa37f 0%,#ff4b00 1%,#ff4b00 100%);
 

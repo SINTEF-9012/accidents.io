@@ -22,6 +22,9 @@ angular.module('mobileMasterApp').controller('AddCtrl', (
 	persistentMap: PersistentMap,
 	voteService: VoteService,
 	notify: angularNotify,
+	$upload: any,
+	cfpLoadingBar: any,
+	settingsService: SettingsService,
 	UUID: UUIDService
 	) => {
 
@@ -157,8 +160,6 @@ angular.module('mobileMasterApp').controller('AddCtrl', (
 		updateIcon();
 	}
 
-	//marker.addTo(masterMap);
-
 	$scope.save = (goToMainAfter: boolean) => {
 
 		if (!$scope.description) {
@@ -178,7 +179,10 @@ angular.module('mobileMasterApp').controller('AddCtrl', (
 			if ($scope.description) {
 				thing.String('description', $scope.description);
 			}
-			thing.DateTime("publication", new Date());
+			thing.DateTime("date", new Date());
+			if ($scope.url) {
+				thing.String('url', $scope.url);
+			}
 			//thing.String('name', $scope.types[$rootScope.add.category].items[$rootScope.add.type]);
 			thing.String('_utmostIcon', icon);
 		}, id);
@@ -207,7 +211,6 @@ angular.module('mobileMasterApp').controller('AddCtrl', (
 		if (toState.name === "main.add") {
 			$scope.save(false);
 		}
-		//masterMap.removeLayer(marker);
 		removeListener();
 	});
 
@@ -223,6 +226,8 @@ angular.module('mobileMasterApp').controller('AddCtrl', (
 			return;
 		}
 
+		var center = masterMap.getCenter();
+
 		var width = jwindow.width();
 		var height = Math.max(Math.floor(jwindow.height() - jMap.offset().top), 300);
 		jMap.height(height - 1 /* border */);
@@ -234,6 +239,12 @@ angular.module('mobileMasterApp').controller('AddCtrl', (
 		}
 
 		masterMap.moveTo(jMap);
+
+		window.setTimeout(() => {
+			masterMap.setView(center, undefined, {
+				animate: false
+			});
+		}, 10);
 	}, 50);
 
 	jwindow.resize(setLayout);
@@ -278,4 +289,55 @@ angular.module('mobileMasterApp').controller('AddCtrl', (
 			description: 'Save',
 			callback: () => $scope.save()
 	});
+	$scope.$watch('utmostFile', () => {
+		if (!$scope.utmostFile || !$scope.utmostFile.length) {
+			return;
+		}
+
+
+		cfpLoadingBar.start();
+		$upload.upload({
+			url: settingsService.getMediaServerUrl() + '/upload',
+			file: $scope.utmostFile[0]
+		}).progress((e) => {
+			cfpLoadingBar.set(e.loaded / e.total);
+		}).success((data) => {
+			var url = data.hash + '.' + data.extension,
+				multimediaServer = settingsService.getMediaServerUrl();
+
+			$scope.url = multimediaServer + '/' + url;
+
+			$scope.mp4Url = multimediaServer + '/convert/mp4/480/' + url;
+			$scope.webmUrl = multimediaServer + '/convert/webm/480/' + url;
+
+			// Small list but it should be enough in 2014 (and we support web)
+			$scope.isPicture = /(bmp|png|jpeg|jpg|gif|tiff|webp)/i.test(data.extension);
+			$scope.isVideo = /(3gb|3g2|h261|h263|h264|jpgv|mp4|mpv4|mpg4|mpeg|mpg|mpe|mv1|mv2|ogv|qt|mov|webm|flv|mkv|mk3d|wm|wmv|avi|movie)/i.test(data.extension);
+
+			if ($scope.isPicture) {
+				$scope.thumbnailUrl = multimediaServer + '/resize/640/480/' + url;
+
+			} else {
+				$scope.thumbnailUrl = multimediaServer + '/thumbnail/' + url;
+			}
+	
+			window.setImmediate(() => {
+				(<any>$('#camera-thumbnail')).imagesLoaded(() => {
+					setLayout();
+				});
+			});
+		}).error(() => {
+			notify({ message: "Sorry, an error occured while uploading the file", classes: "alert-danger" });
+		}).then(() => {
+			cfpLoadingBar.complete();
+		});
+	});
+
+	$scope.removeMedia = () => {
+		$scope.utmostFile = null;
+		$scope.url = null;
+		$scope.isPicture = false;
+		$scope.isVideo = false;
+		window.setImmediate(setLayout);
+	};
 });

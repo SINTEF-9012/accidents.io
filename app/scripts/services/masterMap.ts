@@ -158,8 +158,8 @@
 			});
 
 
-			var colors = ['#ff4b00', '#bac900', '#EC1813', '#55BCBE', '#D2204C', '#7109aa', '#ada59a', '#E86100'],
-				// rouge orange, vert pomme, jaune, bleu ciel, magenta, violet, gris beige, bleu marine
+			var colors = ['#8db0d4', '#bde88e', '#f3b55d', '#e41d1d', '#ff6e05', '#7109aa', '#ada59a', '#E86100'],
+				// blue, green, orange, red, white, violet, gris beige, bleu marine
 				pi2 = Math.PI * 2;
 
 			var clusterIcon = L.Icon.extend({
@@ -721,6 +721,7 @@
 			instance.getDraggedMarkerPosition = () => selectedMapMarkerHasBeenDragged ? selectedMapMarker.getLatLng() : null;
 
 			// rouge orange 0, vert pomme 1, jaune 2, bleu ciel 3, magenta 4, violet 5, gris beige 6, bleu marine 7
+			// blue 0, green1, orange2, red3, white4, violet5, gris beige6, bleu marine7
 			var lockupTypeColor = {
 				Patients: 0,
 				Resources: 3,
@@ -755,12 +756,24 @@
 				});
 
 				var type = itsa.typefrom(thing),
-					category = lockupTypeColor[type],
-					color = colors[category];
+					category = lockupTypeColor[type];
+
+				if (thing.HasProperty("_utmostIcon")) {
+					var icon = thing.String("_utmostIcon");
+					if (icon.lastIndexOf("red") === 0) {
+						category = 3;
+					} else if (icon.lastIndexOf("orange") === 0) {
+						category = 2;
+					} else if (icon.lastIndexOf("green") === 0) {
+						category = 1;
+					} else if (icon.lastIndexOf("almost") === 0) {
+						category = 0;
+					}
+				}
+					//color = colors[category];
 
 				m.category = category;
 				m.filtered = filteringMethod(thing);
-				m.data.minimapColor = color;
 				// TODO weight ?
 
 				cluster.RegisterMarker(m);

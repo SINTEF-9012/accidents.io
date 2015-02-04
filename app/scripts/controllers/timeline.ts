@@ -22,7 +22,7 @@ angular.module('mobileMasterApp')
 
 	var server = settingsService.getHttpThingModelUrl();
 
-	var timelineUrl = server + "/timeline?precision=60000";
+	var timelineUrl = server + "/timeline?precision=50000000";
 
 	var maxDate = +new Date(),
 		minDate = maxDate - 10000,

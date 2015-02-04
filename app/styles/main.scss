@@ -5,19 +5,11 @@
 @import "range-switch.scss";
 @import "bootstrap-sass-official/assets/stylesheets/bootstrap/_variables";
 
-/*html,body{
-    margin:0;
-    padding:0;
-    width:100%;
-    height:100%;
-}*/
 body {
     //background:url(/images/background.png) repeat;
     background:white;
 }
 #main-map, #thing-map {
-    /*position:absolute;
-    display:block;*/
     padding:0;
 
     .map {
@@ -125,144 +117,6 @@ margin-left:1.65em;
 	}
 }
 
-#compass {
-	border:2px solid white;
-	height:200px;
-	width:200px;
-	margin:auto;
-	border-bottom:10px solid white;
-}
-
-#wrapper {
-        position:absolute;
-        z-index: 1;
-        top:0;
-        left:0;
-        bottom:0;
-        right: 0;
-        overflow: hidden;
-        -ms-touch-action: none;
-    // table {
-    //     margin-bottom:0;
-    // }
-}
-
-#scroller {
-        position:absolute;
-        z-index: 1;
-        -webkit-tap-highlight-color: rgba(0,0,0,0);
-        // -webkit-transform: translateZ(0);
-        // -moz-transform: translateZ(0);
-        // -ms-transform: translateZ(0);
-        // -o-transform: translateZ(0);
-        // transform: translateZ(0);
-        -webkit-touch-callout: none;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-        -webkit-text-size-adjust: none;
-        -moz-text-size-adjust: none;
-        -ms-text-size-adjust: none;
-        -o-text-size-adjust: none;
-        text-size-adjust: none;
-
-        .canard_panel {
-	        position:absolute;
-        }
-
-        caption {
-            color:black;
-        }
-
-        th:first-letter {
-            text-transform: uppercase;
-        }
-}
-
-#top-menu {
-	// height:170px;
-	// padding-top:12px;
-    // background:blue;
-    // border-bottom:1px solid #cdcdcd;
-    // margin-top:-1px;
-    // padding-top:10px;
-    // padding-bottom:10px;
-    color:black;
-
-    .row {
-    	margin-left: 0;
-		margin-right: 0;
-    }
-
-    .layerOption {
-    	// height:110px;
-    	height:50px;
-    	margin:0;
-    	// display:inline-block;
-    	// text-align: center;
-
-    	.has-switch {
-    		border-color:transparent;
-    		margin-left:1em;
-
-    		// &.switch-large {
-    		// 	min-width:100px;
-    		// }
-
-    		span.switch-left {
-    			background:#16a085;
-    			text-shadow: none;
-    		}
-
-    		label.switch-large {
-    			background:white;
-    			border:none;
-    		border-color:transparent;
-    		}
-
-    		span.switch-right {
-    			background:#95a5a6;
-    			text-shadow:none;
-    			color:white;
-    		}
-    	}
-    }
-
-
-    h3 {
-    	color:#333;
-    	margin:10px;
-
-    }
-
-    .content {
-    	padding-bottom:10px;
-    }
-
-    .tools {
-        padding-bottom:10px;
-        button {
-            margin-left:10px;
-        }
-    }
-
-}
-
-
-@media (orientation:landscape) {
-    html.ipad.ios {
-    }
-    //html.ipad.ios7 > body #wrapper {
-/* position: fixed;
-bottom: 0;
-width:100%;
-height: 672px !important;
-*/
-/*border-bottom:40px solid green;*/
-// margin-bottom:20px;
-   //}
-}
 
 // #main {
 	.infos {
@@ -374,73 +228,6 @@ left: 2em;
     width:auto;
 }
 
-// .popup-order {
-//     #view-popup {
-//         position:relative;
-//     }
-//     .popup-content {
-//         // width:100%;
-//     }
-// }
-
-/*#layout-popup, .canard {
-    .view-popup-animation {
-        position:relative;
-        min-width:300px;
-        width:auto;
-    }
-
-    [ui-view].ng-enter {
-        visibility: hidden;
-    }
-    [ui-view].ng-enter, [ui-view].ng-leave {
-      position: absolute;
-      left: 0;
-      right: 0;
-      // -webkit-transition:opacity .5s ease-in-out;
-      //   -moz-transition:opacity .5s ease-in-out;
-      //   -o-transition:opacity .5s ease-in-out;
-        transition:all .5s ease-in-out;
-    }
-
-    [ui-view].ng-enter {
-      opacity: 0;
-      // -webkit-transform:translateX(-200px);
-      // transform:translateX(-200px);
-      -webkit-transform:scale3d(0.5, 0.5, 0.5);
-      -moz-transform:scale3d(0.5, 0.5, 0.5);
-      transform:scale3d(0.5, 0.5, 0.5);
-    }
-
-    [ui-view].ng-enter-active {
-      opacity: 1;
-      visibility:visible;
-      display:block;
-      -webkit-transform:scale3d(1, 1, 1);
-      -moz-transform:scale3d(1, 1, 1);
-      transform:scale3d(1, 1, 1);
-      // -webkit-transform:translateX(0);
-      // transform:translateX(0);
-    }
-
-    [ui-view].ng-leave {
-      opacity: 1; 
-      -webkit-transform:translate3d(0, 0, 0);
-      -moz-transform:translate3d(0, 0, 0);
-      transform:translate3d(0, 0, 0);
-      // -webkit-transform:translateX(0);
-      // transform:translateX(0);
-    }
-
-    [ui-view].ng-leave-active {
-      opacity: 0;
-      -webkit-transform:translate3d(100px, 0, 0);
-      -moz-transform:translate3d(100px, 0, 0);
-      transform:translate3d(100px, 0, 0);
-      // -webkit-transform:translateX(200px);
-      // transform:translateX(200px);
-    }
-}*/
 
 .shadow-layer h1 {
     color:white;
@@ -785,23 +572,6 @@ body:not(.touch) .thing.row:hover,  {
     // margin-top:-20px;
 }
 
-#thing-view > div {
-    margin-top:20px;
-}
-
-
-@media (min-width: $screen-xs-max) {
-    /*#thing-map, #thing-view {
-        margin-top:-20px;
-    }*/
-    
-    .properties-list {
-        overflow-y:auto;
-        -webkit-overflow-scrolling: touch;
-    }
-}
-
-
 img.identicon {
     width:41px;
     height:41px;
@@ -809,124 +579,6 @@ img.identicon {
     image-rendering:-webkit-optimize-contrast;
     image-rendering: -moz-crisp-edges;
     -ms-interpolation-mode: nearest-neighbor;
-}
-
-.properties-list {
-    padding-left:24px;
-    padding-right:26px;
-    padding-bottom:11px;
-    word-wrap: break-word;
-}
-
-
-.patientInfobox, .thingInfobox {
-    min-height: 170px;
-
-    //background: #ff5722;
-    background: #ababab url(/images/background-moche.png) repeat;
-    //border-radius: 2px;
-    // padding: 16px;
-    margin-top: 0;
-    margin-bottom:16px;
-    margin-right: -8px;
-    /*box-shadow: 1px 1px 6px rgba(0,0,0,0.35);
-    border: 1px solid rgba(0,0,0,0.15);*/
-    margin-left: -8px;
-    display:flex;
-    flex-direction:column;
-    // align-items:center;
-
-    .infoboxview {
-        width:100%;
-        display: flex;
-
-        align-items:center;
-        flex-grow: 1;
-
-        padding:0.6em;
-
-        & > * {
-            display: block;
-            width:100%;
-            text-align: center;
-        }
-
-        font-size: 1.3em;
-
-        #canvas-temperature-area, #canvas-activity-area {
-            flex-grow: 1;
-            flex-shrink: 0;
-            position:relative;
-            height:140px;
-            & > div {
-                width:100% !important;
-                height:140px !important;
-            }
-        }
-
-        .description-btn {
-            width:auto;
-
-            span.glyphicon {
-                font-size:1.5em;
-            }
-        }
-    }
-
-    h3 {
-        // margin-top: 2px;
-        margin: 0.6em 0.5em 0em 0.7em;
-        flex-shrink:0;
-        // width:100%;
-        /*overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;*/
-        text-align: left;
-        flex-grow:0;
-    }
-
-    span.glyphicon {
-        font-size:2.5em;
-    }
-
-    .triage-light {
-        float: none;
-        margin: 0 auto;
-    }
-}
-
-.patientInfobox {
-    .thing-property-temperature, .thing-property-activity {
-        position:absolute;
-        left: 0;
-        right: 0;
-        /* background: blue; */
-        top: 50%;
-        line-height: 1.6em;
-        margin-top: -0.8em;
-        /* z-index: 1; */
-        font-size: 4em; 
-    }
-}
-.ie11 .infoboxview {
-    min-height: 120px;
-}
-
-div:nth-child(even) > .thingInfobox {
-    background-position:-80px -120px;
-}
-div:nth-child(0) > .thingInfobox {
-    background-position:100px 200px;
-}
-div:nth-child(5) > .thingInfobox {
-    background-position:-100px 200px;
-}
-div:nth-child(3n+1) > .thingInfobox {
-    background-position:200px -100px;
-}
-
-#accordion .panel-heading {
-    cursor:pointer;
 }
 
 .add-view {
@@ -1132,7 +784,7 @@ header .navbar .btn-group.btn-group-fa {
 font-size: 2em;
 margin-top: -19px;
 padding-top: 19px;
-padding-bottom: 0.42em;
+//padding-bottom: 0.42em;
 background: white;
 color: #000000;
 }
@@ -1224,3 +876,8 @@ padding-top: 6px;
     background: $gray-darker;
     color:white;
 }*/
+
+.utmost-date-row {
+    text-align: right;
+    color:$gray;
+}

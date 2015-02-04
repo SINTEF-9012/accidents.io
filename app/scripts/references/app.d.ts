@@ -101,16 +101,6 @@ interface ThingModelService {
 	CurrentTime(): Date;
 }
 
-interface OrderService {
-	setLocation(location: L.LatLng);
-	setDetails(details: string);
-	setTitle(title: string);
-	setType(type: string);
-	addThing(thingID: string);
-	getId(): string;
-	emit();
-	reset();
-}
 
 interface UUIDService {
 	generate(): string;
@@ -189,19 +179,12 @@ interface KnowledgeService {
 }
 
 interface ColorFromImageService {
-	whiteOrBlack: (color: string) => string;
-	applyColor: (img: any, callback: (color: string) => void, exclude?: boolean) => void;
-	hasCache: (img: any) => boolean;
 	colorFromId: (id: string) => {background: string; foreground: string};
 }
 
 interface AuthenticationService {
 	getUserName: () => string;
 	setUserName: (username: string) => void;
-}
-
-interface RrdService {
-	load: (id:string,property:string, callback: (data: any[][]) => void,minMax?: {min: string; max:string}) => void;
 }
 
 interface GeocodingService {

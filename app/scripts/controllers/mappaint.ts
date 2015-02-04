@@ -44,7 +44,6 @@ angular.module('mobileMasterApp')
 	(<any>$scope.$parent.$parent).hideUtmostButton = true;
 
 	window.setImmediate(() => {
-		//masterMap.disableMiniMap();
 		masterMap.addControl(switchControl);
 
 		switchControl._container.onclick = () => {

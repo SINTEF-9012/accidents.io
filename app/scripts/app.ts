@@ -112,32 +112,10 @@ angular.module('mobileMasterApp', [
 			controller: 'ThingCtrl',
 			templateUrl: 'views/utmost-thing.html',
 		})
-		.state('thing.edit', {	
-			url: '/edit',
-			controller: 'EditCtrl',
-			templateUrl: 'views/thingedit.html'
-        })
 		.state('add', {
 			url: '/add?lat&lng',
 			controller: 'AddCtrl',
 			templateUrl: 'views/add.html'
-		})
-		.state('add.informations', {
-			url: '/informations',
-			templateUrl: 'views/addinformations.html',
-			controller: (masterMap: Master.Map) => {
-				masterMap.show();
-			}
-		})
-        .state('order', {
-			url: '/order/:ID?from',
-			controller: 'OrderCtrl',
-			templateUrl: 'views/order.html'
-		})
-		.state('camera', {
-			url: '/camera/:hash/:extension',
-			controller: 'CameraCtrl',
-			templateUrl: 'views/camera.html'
 		})
 		.state('multimedias', {
 			url: '/Multimedias?from',
@@ -149,11 +127,6 @@ angular.module('mobileMasterApp', [
 			controller: 'ThingCtrl',
 			templateUrl: 'views/utmost-thing.html'
 		})
-		.state('media.edit', {	
-			url: '/edit',
-			controller: 'EditCtrl',
-			templateUrl: 'views/thingedit.html'
-        })
 		.state('timeline', {
 			url: '/timeline?from',
 			controller: 'TimelineCtrl',
@@ -198,11 +171,6 @@ angular.module('mobileMasterApp', [
 		combo: 'm',
 		description: 'Map',
 		callback: () => $state.go('map.slidder')
-	});
-	hotkeys.add({
-		combo: 'c',
-		description: 'Messenger',
-		callback: () => $state.go('messenger')
 	});
 	hotkeys.add({
 		combo: 'p',

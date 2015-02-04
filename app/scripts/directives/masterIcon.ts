@@ -109,7 +109,13 @@ angular.module('mobileMasterApp')
 	function setIcon(element: JQuery, type: string, thing: ThingModel.Thing, attrs) {
 		if (thing && thing.HasProperty("_utmostIcon")) {
 			var img = $('<img>');
-			img.attr('src', '/images/utmost/' + thing.String('_utmostIcon') + '-smaa.png');
+			var icon = thing.String("_utmostIcon");
+			if (icon.indexOf("-") !== -1) {
+				icon += "-smaa.png";
+			} else {
+				icon += "-small.png";
+			}
+			img.attr('src', '/images/utmost/' + icon);
 			element.addClass("utmost-icon");
 			if (thing.String("_utmostIcon").indexOf("risk") === 0) {
 				element.addClass("utmost-risk-icon");

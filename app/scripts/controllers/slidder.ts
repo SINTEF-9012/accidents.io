@@ -14,8 +14,6 @@ angular.module('mobileMasterApp')
 		notify: angularNotify
 	) => {
 
-	//var from = $state.current.name.indexOf('map') === 0 ? 'map' : null;
-
 	$('#view-slidder, #dashboard-btn').on('touchmove', () => false);
 
 	var address = null;

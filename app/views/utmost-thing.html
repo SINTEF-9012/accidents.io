@@ -36,6 +36,9 @@
 		<span class="text-danger ng-hide" ng-show="$parent.$parent.thingmodel &amp;&amp; unfound &amp;&amp;!$parent.$parent.thingmodel.loading">Risk not found</span>
 	</div>
 </div>
+<div class="row utmost-date-row">
+	<p class="col-xs-12" ng-if="thing.date"><span am-time-ago="thing.date"></span> - {{thing.date | date:'H\'h\'mm\' - d/M/yyyy'}}</p>
+</div>
 
 <div class="row utmost-geo-views">
 	<div id="streetview-thing" ng-if="hasStreetview" class="col-md-12 col-lg-6">
