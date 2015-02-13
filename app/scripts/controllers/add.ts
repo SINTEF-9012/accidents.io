@@ -43,6 +43,7 @@ angular.module('mobileMasterApp').controller('AddCtrl', (
 		position = masterMap.getCenter();
 	}
 
+	var mapDragged = false;
 
 	$scope.types = {
 		"none": {
@@ -220,13 +221,12 @@ angular.module('mobileMasterApp').controller('AddCtrl', (
 
 	var jwindow = $($window), jMap = $('#thing-map'), jView = $('#thing-view');
 	var destroyed = false;
-
 	var setLayout = throttle(() => {
 		if (destroyed) {
 			return;
 		}
 
-		var center = masterMap.getCenter();
+		var center = mapDragged ? masterMap.getCenter() : position;
 
 		var width = jwindow.width();
 		var height = Math.max(Math.floor(jwindow.height() - jMap.offset().top), 300);
@@ -240,11 +240,11 @@ angular.module('mobileMasterApp').controller('AddCtrl', (
 
 		masterMap.moveTo(jMap);
 
-		window.setTimeout(() => {
+		window.setImmediate(() => {
 			masterMap.setView(center, undefined, {
 				animate: false
 			});
-		}, 10);
+		});
 	}, 50);
 
 	jwindow.resize(setLayout);
@@ -260,8 +260,18 @@ angular.module('mobileMasterApp').controller('AddCtrl', (
 	};
 	jView.on('click', delayedClick);
 
+	var onDrag = () => {
+		mapDragged = true;
+		masterMap.off('drag', onDrag);
+		onDrag = null;
+	};
+	masterMap.on('dragstart', onDrag);
+
 	$scope.$on('$destroy', () => {
 		destroyed = true;
+		if (onDrag) {
+			masterMap.off('drag', onDrag);
+		}
 		jwindow.off('resize', setLayout);
 		jView.off('click', delayedClick);
 		masterMap.disableShadow();
@@ -269,15 +279,24 @@ angular.module('mobileMasterApp').controller('AddCtrl', (
 	});
 
 
-	//persistentMap.unbindMasterMap(masterMap);
+	persistentMap.unbindMasterMap(masterMap);
 	masterMap.setVerticalTopMargin(0);
 	masterMap.disableSituationOverview();
 	setLayout();
-	persistentMap.bindMasterMap(masterMap);
 
 	window.setImmediate(() => {
 		persistentMap.restorePersistentLayer(masterMap);
-		masterMap.panTo(position);
+		persistentMap.bindMasterMap(masterMap);
+		masterMap.panTo(position, {
+			animate: true//!$stateParams.lat || !$stateParams.lng
+		});
+		if ($stateParams.lat && $stateParams.lng) {
+			window.setTimeout(() => {
+				masterMap.panTo(position, {
+					animate: true//!$stateParams.lat || !$stateParams.lng
+				});
+			}, 500);
+		}
 		masterMap.enableShadow(undefined, iconContainer, 'flex');
 	});
 
