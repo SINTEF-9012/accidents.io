@@ -15,6 +15,7 @@ angular.module('mobileMasterApp')
 		thingModel: ThingModelService,
 		geocodingService: GeocodingService,
 		$stateParams,
+		masterMap: Master.Map,
 		mapPopupService: MapPopupService,
 		notify: angularNotify,
 		streetViewService: StreetViewService) => {
@@ -24,7 +25,8 @@ angular.module('mobileMasterApp')
 	if ($stateParams.lat && $stateParams.lng) {
 		position = new google.maps.LatLng($stateParams.lat, $stateParams.lng);
 	} else {
-		position = new google.maps.LatLng(59.96058831566811, 10.764702558517458);
+		var mapCenter = masterMap.getCenter();
+		position = new google.maps.LatLng(mapCenter.lat, mapCenter.lng);
 	}
 
 	var panoramaService = new google.maps.StreetViewService;
